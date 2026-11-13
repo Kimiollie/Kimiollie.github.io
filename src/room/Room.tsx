@@ -11,7 +11,7 @@ import PawPrints from './PawPrints.tsx';
 import RoomItem from './RoomItem.tsx';
 import SpeechBubble from './SpeechBubble.tsx';
 import VisitingFriend from './VisitingFriend.tsx';
-import { pickVisitor, type Random } from './visitor.ts';
+import { friendById, pickFriend, pickVisitor, type Random } from './visitor.ts';
 import {
   HOME,
   IDLE,
@@ -50,9 +50,12 @@ interface RoomProps {
 
 function Room({ random = Math.random }: RoomProps) {
   const [searchParams] = useSearchParams();
-  // Decided once per mount (= once per home visit), never on re-render.
-  const [visitor] = useState(() => pickVisitor(random));
   const debug = searchParams.has('debug');
+  // Decided once per mount (= once per home visit), never on re-render.
+  // In ?debug a friend always visits (?friend=kiwi|moon|tho picks which), to check the size.
+  const [visitor] = useState(() =>
+    debug ? (friendById(searchParams.get('friend')) ?? pickFriend(random)) : pickVisitor(random),
+  );
   const [lastClick, setLastClick] = useState<Point | null>(null);
   const [activeId, setActiveId] = useState<RoomItemKey | null>(null);
   const [idleLookup, setIdleLookup] = useState(false);
@@ -159,7 +162,7 @@ function Room({ random = Math.random }: RoomProps) {
       />
       {posedAtFloor && <OlliePose item={posedAtFloor} pose={posedAtFloor.pose!} />}
       {bubble && <SpeechBubble anchor={bubble.anchor} text={bubble.text} />}
-      {debug && <DebugOverlay lastClick={lastClick} />}
+      {debug && <DebugOverlay lastClick={lastClick} visitor={visitor?.id ?? null} />}
     </section>
   );
 }

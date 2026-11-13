@@ -178,15 +178,22 @@ export const WALK = {
 
 /**
  * Visiting friend easter egg: 1-in-2 chance per home visit (PLAN.md 4.3 said 1 in 3).
- * The spot is on the floor in front of the door: clear of the mailbox (and its pose), the ball,
- * the water bowl, Ollie at the light switch, and all of Ollie's walking paths.
+ * The spot is on the right, on the floor in front of the door: clear of the contact item and
+ * Ollie's spot there (1005, 655), the ball, the water bowl, Ollie at the light switch, and all of
+ * Ollie's walking paths. (The left wall is kept free for the wall phone.)
+ * Check with /?debug&friend=kiwi|moon|tho: the overlay outlines the friend with its size factor.
  */
 export const FRIEND_VISIT = {
   chance: 1 / 2,
   spot: { x: 1185, y: 640 } satisfies Point,
-  /** Sitting heights in image px before the depth scale: the same as Ollie sitting (135). */
-  height: { kiwi: 135, moon: 135, tho: 135 } satisfies Record<FriendId, number>,
+  /** Height as a fraction of Ollie's sit height (OLLIE_HEIGHT.sit), before the depth scale. */
+  sizeFactor: { kiwi: 0.95, moon: 0.9, tho: 0.85 } satisfies Record<FriendId, number>,
 };
+
+/** A visiting friend's height in image px, before the depth scale. */
+export function friendHeight(id: FriendId): number {
+  return OLLIE_HEIGHT.sit * FRIEND_VISIT.sizeFactor[id];
+}
 
 /** Idle at home: every 5 s, a 50% chance of looking up for 1.5 s (PLAN.md 4.3). */
 export const IDLE = {

@@ -1,14 +1,26 @@
-import { HOME, ROOM_H, ROOM_ITEMS, ROOM_W, itemBox, type Point } from './room.config.ts';
+import type { FriendId } from '../content/types.ts';
+import {
+  FRIEND_VISIT,
+  HOME,
+  ROOM_H,
+  ROOM_ITEMS,
+  ROOM_W,
+  itemBox,
+  type Point,
+} from './room.config.ts';
+import { visitorBox } from './visitor.ts';
 import styles from './DebugOverlay.module.css';
 
 const GRID = 50;
 
 interface DebugOverlayProps {
   lastClick: Point | null;
+  /** The visiting friend, outlined with its size factor. */
+  visitor: FriendId | null;
 }
 
 /** Shown on /?debug: a 50 px grid, item boxes and the last clicked image coordinates. */
-function DebugOverlay({ lastClick }: DebugOverlayProps) {
+function DebugOverlay({ lastClick, visitor }: DebugOverlayProps) {
   const xs = Array.from({ length: Math.floor(ROOM_W / GRID) + 1 }, (_, i) => i * GRID);
   const ys = Array.from({ length: Math.floor(ROOM_H / GRID) + 1 }, (_, i) => i * GRID);
 
@@ -75,6 +87,28 @@ function DebugOverlay({ lastClick }: DebugOverlayProps) {
             </g>
           );
         })}
+
+        {visitor && (
+          <g data-testid="debug-visitor">
+            {(() => {
+              const box = visitorBox(visitor);
+              return (
+                <>
+                  <rect
+                    x={box.left}
+                    y={box.top}
+                    width={box.width}
+                    height={box.height}
+                    className={styles.box}
+                  />
+                  <text x={box.left} y={box.top - 4} className={styles.boxText}>
+                    {visitor} ×{FRIEND_VISIT.sizeFactor[visitor]}
+                  </text>
+                </>
+              );
+            })()}
+          </g>
+        )}
 
         <circle cx={HOME.x} cy={HOME.y} r={6} className={styles.home} />
         <text x={HOME.x + 8} y={HOME.y + 4} className={styles.boxText}>

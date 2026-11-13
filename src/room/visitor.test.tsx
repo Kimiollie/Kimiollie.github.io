@@ -3,7 +3,17 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import NotFound from '../pages/NotFound.tsx';
 import Room from './Room.tsx';
-import { pickFriend, pickVisitor } from './visitor.ts';
+import { pickFriend, pickVisitor, visitorBox } from './visitor.ts';
+import {
+  FRIEND_VISIT,
+  OLLIE_HEIGHT,
+  ROOM_ITEMS,
+  ROOM_W,
+  depthScale,
+  friendHeight,
+  itemBox,
+  walkTarget,
+} from './room.config.ts';
 
 /** Dice that return the given rolls in order (then repeat the last one). */
 function dice(...rolls: number[]) {
@@ -93,10 +103,38 @@ describe('404 page', () => {
 });
 
 describe('visitor size', () => {
-  it('sits at the same height as Ollie', async () => {
-    const { FRIEND_VISIT, OLLIE_HEIGHT } = await import('./room.config.ts');
-    for (const height of Object.values(FRIEND_VISIT.height)) {
-      expect(height).toBe(OLLIE_HEIGHT.sit);
+  it("scales each friend from Ollie's sit height by its size factor", () => {
+    expect(friendHeight('kiwi')).toBeCloseTo(OLLIE_HEIGHT.sit * 0.95);
+    expect(friendHeight('moon')).toBeCloseTo(OLLIE_HEIGHT.sit * 0.9);
+    expect(friendHeight('tho')).toBeCloseTo(OLLIE_HEIGHT.sit * 0.85);
+  });
+
+  it('sits on the spot with the depth scale', () => {
+    const box = visitorBox('tho');
+    const { x, y } = FRIEND_VISIT.spot;
+    expect(box.left + box.width / 2).toBeCloseTo(x);
+    expect(box.top + box.height).toBeCloseTo(y);
+    expect(box.height).toBeCloseTo(friendHeight('tho') * depthScale(y));
+  });
+
+  it("stays on the right, clear of the contact item and Ollie's spot there", () => {
+    const contact = ROOM_ITEMS.find((item) => item.id === 'contact')!;
+    const contactBox = itemBox(contact);
+    for (const id of ['kiwi', 'moon', 'tho'] as const) {
+      const box = visitorBox(id);
+      expect(box.left).toBeGreaterThan(contactBox.left + contactBox.width);
+      expect(box.left).toBeGreaterThan(walkTarget(contact).x + 100);
+      expect(box.left).toBeGreaterThan(ROOM_W / 2);
     }
+  });
+
+  it('always shows the chosen friend in ?debug, outlined with its factor', () => {
+    render(
+      <MemoryRouter initialEntries={['/?debug&friend=tho']}>
+        <Room random={dice(0.99)} />
+      </MemoryRouter>,
+    );
+    expect(screen.getByTestId('visiting-friend').dataset.friend).toBe('tho');
+    expect(screen.getByTestId('debug-visitor').textContent).toBe('tho ×0.85');
   });
 });
