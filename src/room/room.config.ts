@@ -23,10 +23,13 @@ export type RoomItemKey = RoomItemId | 'switch';
 export type RoomAction =
   { type: 'route'; to: string } | { type: 'download'; href: string } | { type: 'toggleTheme' };
 
-export type ItemImage = 'desk' | 'easel' | 'mailbox' | 'ball';
+export type ItemImage = 'desk' | 'easel' | 'phone' | 'ball';
 
-/** Ollie's poses at floor items. Wall items use the lookup sprite instead. */
-export type ItemPose = 'laptop' | 'easel' | 'mailbox' | 'fetch';
+/**
+ * Ollie's item poses. Wall items use the lookup sprite unless they have their own pose
+ * (the phone): then the pose is lined up with the wall item, see poseLayout.ts.
+ */
+export type ItemPose = 'laptop' | 'easel' | 'phone' | 'fetch';
 
 export interface RoomItemConfig {
   id: RoomItemKey;
@@ -45,11 +48,15 @@ export interface RoomItemConfig {
   label: string;
   /** Floor items: src/assets/items/<image>.webp and <image>_c.webp. */
   image?: ItemImage;
-  /** Floor items: Ollie's pose, shown at the item when he arrives. */
+  /** Ollie's pose, shown when he arrives (the item and Ollie are hidden meanwhile). */
   pose?: ItemPose;
-  /** Pose x offset from the item, in image px. */
+  /** Floor items: pose x offset from the item, in image px. */
   poseDx?: number;
-  /** Pose (or lookup sprite) height in image px, before the depth scale. */
+  /**
+   * Floor items: pose height in image px, before the depth scale.
+   * Wall items without a pose: height of the lookup sprite.
+   * Wall items with a pose ignore poseDx/poseH: the pose is sized and placed so it overlaps the item.
+   */
   poseH?: number;
   /** Wall items: where Ollie stands below the item. */
   standAt?: Point;
@@ -114,19 +121,21 @@ export const ROOM_ITEMS: RoomItemConfig[] = [
     poseH: 285,
   },
   {
+    // Wall phone on the left wall. The phone pose is lined up with it automatically, so tune
+    // x, y and h here: Ollie's feet land about 1.1 × h below the phone and he stands about 2 × h tall,
+    // about 1.5 × h to the right of the phone. At h 110, x ≈ 200 keeps his pose clear of the lamp,
+    // desk and easel (checked pixel by pixel), with the phone well below the ceiling line.
     id: 'contact',
-    kind: 'floor',
-    x: 1050,
-    y: 655,
-    h: 215,
-    aspect: 176 / 282,
+    kind: 'wall',
+    x: 198,
+    y: 420,
+    h: 110,
+    aspect: 450 / 594,
     action: { type: 'route', to: '/contact' },
     colour: 'var(--c-contact)',
     label: roomLabels.contact,
-    image: 'mailbox',
-    pose: 'mailbox',
-    poseDx: -45,
-    poseH: 220,
+    image: 'phone',
+    pose: 'phone',
   },
   {
     id: 'cv',
@@ -181,14 +190,28 @@ export const WALK = {
  * The spot is on the right, on the floor in front of the door: clear of the contact item and
  * Ollie's spot there (1005, 655), the ball, the water bowl, Ollie at the light switch, and all of
  * Ollie's walking paths. (The left wall is kept free for the wall phone.)
- * Check with /?debug&friend=kiwi|moon|tho: the overlay outlines the friend with its size factor.
+ * Check with /?debug&friend=kiwi|moon|tho: the overlay outlines the friend with its size factor
+ * and marks Ollie's greeting spot.
  */
 export const FRIEND_VISIT = {
   chance: 1 / 2,
   spot: { x: 1185, y: 640 } satisfies Point,
+  /**
+   * Hovering the friend: Ollie walks to this offset from the friend's spot and greets it.
+   * Every item and his bed are left of the door, so he always comes from the left: this puts him
+   * just left of and slightly in front of the friend (clear of the friend, the water bowl, the
+   * light switch, the ball and the phone).
+   */
+  greetOffset: { dx: -85, dy: 15 },
   /** Height as a fraction of Ollie's sit height (OLLIE_HEIGHT.sit), before the depth scale. */
   sizeFactor: { kiwi: 0.95, moon: 0.9, tho: 0.85 } satisfies Record<FriendId, number>,
 };
+
+/** Where Ollie stands to greet the visiting friend. */
+export function greetSpot(): Point {
+  const { spot, greetOffset } = FRIEND_VISIT;
+  return { x: spot.x + greetOffset.dx, y: spot.y + greetOffset.dy };
+}
 
 /** A visiting friend's height in image px, before the depth scale. */
 export function friendHeight(id: FriendId): number {

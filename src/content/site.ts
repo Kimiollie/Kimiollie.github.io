@@ -62,7 +62,7 @@ export const ollieLines: Record<RoomItemId, string> = {
   projects: "Woof! Kim's projects live here.",
   about: "That's Kim. And me, obviously.",
   beyond: 'Kim paints dogs. Mostly me.',
-  contact: 'Got mail? Say hi to Kim!',
+  contact: 'Ring ring! Say hi to Kim!',
   cv: "Fetch! Here's Kim's CV.",
 };
 

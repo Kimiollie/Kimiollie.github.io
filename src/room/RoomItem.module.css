@@ -93,6 +93,11 @@
     0 0 16px 6px color-mix(in srgb, var(--item-colour) 55%, transparent);
 }
 
+/* Wall items with their own image (the phone) swap to colour like floor items. */
+.wall.hasImage[data-active] {
+  box-shadow: none;
+}
+
 /* Label pill above the item. */
 .label {
   position: absolute;

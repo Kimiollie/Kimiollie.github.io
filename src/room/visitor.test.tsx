@@ -7,13 +7,14 @@ import { pickFriend, pickVisitor, visitorBox } from './visitor.ts';
 import {
   FRIEND_VISIT,
   OLLIE_HEIGHT,
+  greetSpot,
   ROOM_ITEMS,
   ROOM_W,
   depthScale,
   friendHeight,
   itemBox,
-  walkTarget,
 } from './room.config.ts';
+import { walkTargetFor } from './poseLayout.ts';
 
 /** Dice that return the given rolls in order (then repeat the last one). */
 function dice(...rolls: number[]) {
@@ -50,18 +51,13 @@ describe('pickVisitor', () => {
 });
 
 describe('visiting friend in the room', () => {
-  it('appears when the roll is < 1/2: decorative, with a name bubble on hover', () => {
+  it('appears when the roll is < 1/2, and stays decorative', () => {
     renderRoom(dice(0.2, 0.5));
     const visitor = screen.getByTestId('visiting-friend');
     expect(visitor.dataset.friend).toBe('moon');
     expect(visitor.getAttribute('aria-hidden')).toBe('true');
     expect(visitor.querySelector('a, button, [tabindex]')).toBeNull();
-    expect(screen.queryByText('Moon is visiting!')).toBeNull();
-
-    fireEvent.mouseEnter(visitor.firstElementChild!);
-    expect(screen.getByText('Moon is visiting!')).toBeDefined();
-    fireEvent.mouseLeave(visitor.firstElementChild!);
-    expect(screen.queryByText('Moon is visiting!')).toBeNull();
+    expect(screen.queryByTestId('speech-bubble')).toBeNull();
   });
 
   it('does not appear when the roll is >= 1/2', () => {
@@ -123,7 +119,7 @@ describe('visitor size', () => {
     for (const id of ['kiwi', 'moon', 'tho'] as const) {
       const box = visitorBox(id);
       expect(box.left).toBeGreaterThan(contactBox.left + contactBox.width);
-      expect(box.left).toBeGreaterThan(walkTarget(contact).x + 100);
+      expect(box.left).toBeGreaterThan(walkTargetFor(contact).x + 100);
       expect(box.left).toBeGreaterThan(ROOM_W / 2);
     }
   });
@@ -136,5 +132,101 @@ describe('visitor size', () => {
     );
     expect(screen.getByTestId('visiting-friend').dataset.friend).toBe('tho');
     expect(screen.getByTestId('debug-visitor').textContent).toBe('tho ×0.85');
+  });
+});
+
+function reduceMotion() {
+  vi.stubGlobal('matchMedia', (query: string) => ({
+    matches: query.includes('reduce'),
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  }));
+}
+
+describe('Ollie greets the visiting friend', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  const friendArea = () => screen.getByTestId('visiting-friend').firstElementChild!;
+
+  it('walks over when the friend is hovered', () => {
+    renderRoom(dice(0.2, 0.5));
+    fireEvent.mouseEnter(friendArea());
+    const ollie = screen.getByTestId('ollie');
+    expect(ollie.dataset.sprite).toMatch(/^walk_/);
+    expect(screen.queryByTestId('speech-bubble')).toBeNull();
+  });
+
+  it('sits facing the friend and says hi by name; the friend stays aria-hidden', () => {
+    reduceMotion();
+    renderRoom(dice(0.2, 0.5));
+    fireEvent.mouseEnter(friendArea());
+
+    const ollie = screen.getByTestId('ollie');
+    expect(ollie.dataset.sprite).toBe('sit');
+    expect(ollie.style.zIndex).toBe(String(greetSpot().y));
+    expect(ollie.querySelector('img')!.style.transform).toBe('scaleX(-1)');
+    const bubble = screen.getByTestId('speech-bubble');
+    expect(bubble.textContent).toBe('Hi, Moon!');
+    expect(bubble.textContent).toContain('Moon');
+    expect(screen.getByTestId('visiting-friend').getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('greets each friend by their own name', () => {
+    reduceMotion();
+    renderRoom(dice(0.2, 0.9));
+    fireEvent.mouseEnter(friendArea());
+    expect(screen.getByTestId('speech-bubble').textContent).toBe('Hi, Tho!');
+  });
+
+  it('walks home when the mouse leaves the friend', () => {
+    reduceMotion();
+    renderRoom(dice(0.2, 0));
+    fireEvent.mouseEnter(friendArea());
+    fireEvent.mouseLeave(friendArea());
+    expect(screen.queryByTestId('speech-bubble')).toBeNull();
+    const ollie = screen.getByTestId('ollie');
+    expect(ollie.dataset.sprite).toBe('sit');
+    expect(ollie.style.zIndex).toBe('585');
+    expect(ollie.querySelector('img')!.style.transform).toBe('');
+  });
+
+  it('hovering an item instead switches to that item', () => {
+    reduceMotion();
+    renderRoom(dice(0.2, 0));
+    fireEvent.mouseEnter(friendArea());
+    fireEvent.mouseEnter(screen.getByRole('link', { name: 'Projects' }));
+    expect(screen.getByTestId('ollie-pose').dataset.pose).toBe('laptop');
+    expect(screen.getByTestId('speech-bubble').textContent).toBe("Woof! Kim's projects live here.");
+  });
+
+  it('greets from a spot clear of the friend, the phone, the ball, the bowl and the switch', () => {
+    const spot = greetSpot();
+    const height = OLLIE_HEIGHT.sit * depthScale(spot.y);
+    const width = (height * 269) / 376; // sit sprite drawing proportions
+    const ollie = {
+      left: spot.x - width / 2,
+      top: spot.y - height,
+      right: spot.x + width / 2,
+      bottom: spot.y,
+    };
+    const apart = (a: typeof ollie, b: typeof ollie) =>
+      a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top;
+    const asRect = (b: { left: number; top: number; width: number; height: number }) => ({
+      left: b.left,
+      top: b.top,
+      right: b.left + b.width,
+      bottom: b.top + b.height,
+    });
+
+    for (const id of ['kiwi', 'moon', 'tho'] as const) {
+      expect(apart(ollie, asRect(visitorBox(id)))).toBe(true);
+    }
+    for (const id of ['contact', 'cv', 'switch'] as const) {
+      expect(apart(ollie, asRect(itemBox(ROOM_ITEMS.find((item) => item.id === id)!)))).toBe(true);
+    }
+    // The water bowl drawn in the room image (front of the door).
+    expect(apart(ollie, { left: 1163, top: 672, right: 1252, bottom: 722 })).toBe(true);
   });
 });

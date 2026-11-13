@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { FocusEvent, MouseEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { greetLine } from '../content/beyond.ts';
 import { lightSwitchLines, ollieLines, roomLabel } from '../content/site.ts';
 import type { Theme } from '../theme/dayNight.ts';
 import { useTheme } from '../theme/themeContext.ts';
@@ -15,17 +16,18 @@ import { friendById, pickFriend, pickVisitor, type Random } from './visitor.ts';
 import {
   HOME,
   IDLE,
+  OLLIE_HEIGHT,
+  greetSpot,
   ITEMS_IN_TAB_ORDER,
   ROOM_H,
   ROOM_ITEMS,
   ROOM_W,
-  poseBox,
-  walkTarget,
   type Point,
   type RoomItemConfig,
   type RoomItemKey,
 } from './room.config.ts';
-import { poseImages, roomBackgrounds } from './roomAssets.ts';
+import { poseLayout, walkTargetFor } from './poseLayout.ts';
+import { roomBackgrounds } from './roomAssets.ts';
 import { useWalker } from './useWalker.ts';
 import styles from './Room.module.css';
 
@@ -38,8 +40,7 @@ function lineFor(item: RoomItemConfig, theme: Theme): string {
 
 /** Top-centre of the item's pose, for the speech bubble. */
 function poseTop(item: RoomItemConfig): Point {
-  const art = poseImages[item.pose!];
-  const box = poseBox(item, (art.width - 2 * art.pad) / (art.height - 2 * art.pad));
+  const { box } = poseLayout(item)!;
   return { x: box.left + box.width / 2, y: box.top };
 }
 
@@ -57,16 +58,19 @@ function Room({ random = Math.random }: RoomProps) {
     debug ? (friendById(searchParams.get('friend')) ?? pickFriend(random)) : pickVisitor(random),
   );
   const [lastClick, setLastClick] = useState<Point | null>(null);
-  const [activeId, setActiveId] = useState<RoomItemKey | null>(null);
+  // An item, the visiting friend, or nothing (Ollie at home).
+  const [activeId, setActiveId] = useState<RoomItemKey | 'friend' | null>(null);
   const [idleLookup, setIdleLookup] = useState(false);
   const { position, isWalking, direction, walkTo, reducedMotion } = useWalker(HOME);
   const { theme, toggleTheme } = useTheme();
 
   const active = ROOM_ITEMS.find((item) => item.id === activeId) ?? null;
-  const arrived = active !== null && !isWalking && near(position, walkTarget(active));
-  const posedAtFloor = arrived && active.kind === 'floor' && active.pose ? active : null;
-  const lookingUpAtWall = arrived && active.kind === 'wall';
-  const idleAtHome = active === null && !isWalking && near(position, HOME);
+  const arrived = active !== null && !isWalking && near(position, walkTargetFor(active));
+  const posedItem = arrived && active.pose ? active : null;
+  const lookingUpAtWall = arrived && active.kind === 'wall' && !active.pose;
+  const greeting =
+    activeId === 'friend' && visitor !== null && !isWalking && near(position, greetSpot());
+  const idleAtHome = activeId === null && !isWalking && near(position, HOME);
 
   // Idle at home: now and then, Ollie looks up for a moment.
   useEffect(() => {
@@ -87,7 +91,13 @@ function Room({ random = Math.random }: RoomProps) {
   const activate = (item: RoomItemConfig) => {
     if (item.id === activeId) return;
     setActiveId(item.id);
-    walkTo(walkTarget(item));
+    walkTo(walkTargetFor(item));
+  };
+
+  const greetFriend = () => {
+    if (activeId === 'friend') return;
+    setActiveId('friend');
+    walkTo(greetSpot());
   };
 
   const goHome = () => {
@@ -114,8 +124,10 @@ function Room({ random = Math.random }: RoomProps) {
   };
 
   let bubble: { anchor: Point; text: string } | null = null;
-  if (posedAtFloor) {
-    bubble = { anchor: poseTop(posedAtFloor), text: lineFor(posedAtFloor, theme) };
+  if (posedItem) {
+    bubble = { anchor: poseTop(posedItem), text: lineFor(posedItem, theme) };
+  } else if (greeting) {
+    bubble = { anchor: ollieTop(position, OLLIE_HEIGHT.sit), text: greetLine(visitor.name) };
   } else if (lookingUpAtWall) {
     bubble = {
       anchor: ollieTop(position, active.poseH ?? 135),
@@ -144,13 +156,13 @@ function Room({ random = Math.random }: RoomProps) {
           key={item.id}
           item={item}
           active={item.id === activeId}
-          posed={posedAtFloor?.id === item.id}
+          posed={posedItem?.id === item.id}
           onActivate={() => activate(item)}
           lightsOn={theme === 'day'}
           onToggleTheme={toggleTheme}
         />
       ))}
-      {visitor && <VisitingFriend friend={visitor} />}
+      {visitor && <VisitingFriend friend={visitor} onHover={greetFriend} onLeave={goHome} />}
       <PawPrints position={position} isWalking={isWalking} reducedMotion={reducedMotion} />
       <Ollie
         position={position}
@@ -158,9 +170,10 @@ function Room({ random = Math.random }: RoomProps) {
         direction={direction}
         still={lookingUpAtWall || (idleAtHome && idleLookup) ? 'lookup' : 'sit'}
         stillHeight={lookingUpAtWall ? active.poseH : undefined}
-        hidden={posedAtFloor !== null}
+        hidden={posedItem !== null}
+        faceRight={greeting}
       />
-      {posedAtFloor && <OlliePose item={posedAtFloor} pose={posedAtFloor.pose!} />}
+      {posedItem && <OlliePose item={posedItem} pose={posedItem.pose!} />}
       {bubble && <SpeechBubble anchor={bubble.anchor} text={bubble.text} />}
       {debug && <DebugOverlay lastClick={lastClick} visitor={visitor?.id ?? null} />}
     </section>

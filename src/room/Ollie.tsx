@@ -17,6 +17,8 @@ interface OllieProps {
   stillHeight?: number;
   /** Hidden while one of his item poses is shown. */
   hidden?: boolean;
+  /** Standing still: mirror the sprite so he turns to the right (greeting the visiting friend). */
+  faceRight?: boolean;
 }
 
 /** Ollie's top-centre in image px for a still sprite: where the speech bubble's tail points. */
@@ -31,6 +33,7 @@ function Ollie({
   still = 'sit',
   stillHeight = OLLIE_HEIGHT.sit,
   hidden = false,
+  faceRight = false,
 }: OllieProps) {
   const [frame, setFrame] = useState(0);
 
@@ -58,7 +61,8 @@ function Ollie({
   const box = { left: position.x - width / 2, top: position.y - height, width, height };
 
   const style = { ...boxToPercent(box), zIndex: Math.round(position.y) } as CSSProperties;
-  const flip = isWalking && direction === 'left';
+  // Walk sprites face right; the sit sprite is angled slightly left, so mirror it to face right.
+  const flip = isWalking ? direction === 'left' : faceRight;
 
   return (
     <div

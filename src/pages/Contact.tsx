@@ -34,7 +34,7 @@ function Contact() {
         title={contactPage.title}
         sub={contactPage.sub}
         accent="var(--c-contact)"
-        pose="mailbox"
+        pose="phone"
       />
 
       <div className={styles.layout}>

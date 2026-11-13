@@ -2,7 +2,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Room from './Room.tsx';
-import { ROOM_ITEMS, depthScale, itemBox } from './room.config.ts';
+import { ROOM_ITEMS, ROOM_W, depthScale, itemBox } from './room.config.ts';
+import { poseLayout, walkTargetFor } from './poseLayout.ts';
+import { itemImages, poseImages } from './roomAssets.ts';
 
 function renderRoom(path = '/') {
   return render(
@@ -183,7 +185,7 @@ describe('hover and focus (step 3.4)', () => {
     renderRoom();
     const mailbox = screen.getByRole('link', { name: 'Contact' });
     fireEvent.focus(mailbox);
-    expect(screen.getByTestId('speech-bubble').textContent).toBe('Got mail? Say hi to Kim!');
+    expect(screen.getByTestId('speech-bubble').textContent).toBe('Ring ring! Say hi to Kim!');
 
     fireEvent.mouseLeave(screen.getByRole('region', { name: "Ollie's House" }));
     expect(screen.queryByTestId('speech-bubble')).toBeNull();
@@ -209,11 +211,11 @@ describe('hover and focus (step 3.4)', () => {
       el.getAttribute('aria-label'),
     );
     expect(order).toEqual([
+      'Contact',
       'Beyond code',
       'Projects',
       'CV (PDF)',
       'About',
-      'Contact',
       'Light switch',
     ]);
   });
@@ -234,5 +236,74 @@ describe('hover and focus (step 3.4)', () => {
       vi.advanceTimersByTime(1500);
     });
     expect(ollie().dataset.sprite).toBe('sit');
+  });
+});
+
+describe('wall phone (step 3.5c)', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('is a wall item on the left wall, still named Contact, linking to /contact', () => {
+    const phone = ROOM_ITEMS.find((item) => item.id === 'contact')!;
+    expect(phone.kind).toBe('wall');
+    expect(phone.image).toBe('phone');
+    expect(phone.pose).toBe('phone');
+    expect(phone.x).toBeLessThan(ROOM_W / 2);
+
+    renderRoom();
+    const link = screen.getByRole('link', { name: 'Contact' });
+    expect(link.getAttribute('href')).toBe('/contact');
+    expect(link.getAttribute('aria-label')).toBe('Contact');
+  });
+
+  it('lines the phone body in the pose up exactly with the wall phone', () => {
+    const phone = ROOM_ITEMS.find((item) => item.id === 'contact')!;
+    const item = itemBox(phone);
+    const itemArt = itemImages.phone;
+    const poseArt = poseImages.phone;
+    const { box: pose } = poseLayout(phone)!;
+
+    const itemScale = item.height / (itemArt.height - 2 * itemArt.pad);
+    const poseScale = pose.height / (poseArt.height - 2 * poseArt.pad);
+    const bodyIn = (box: typeof item, art: typeof itemArt, scale: number) => ({
+      left: box.left + (art.body!.x1 - art.pad) * scale,
+      top: box.top + (art.body!.y1 - art.pad) * scale,
+      right: box.left + (art.body!.x2 - art.pad) * scale,
+    });
+    const a = bodyIn(item, itemArt, itemScale);
+    const b = bodyIn(pose, poseArt, poseScale);
+    expect(b.left).toBeCloseTo(a.left, 6);
+    expect(b.top).toBeCloseTo(a.top, 6);
+    expect(b.right).toBeCloseTo(a.right, 6);
+  });
+
+  it("walks Ollie to the pose's feet, on the floor in front of the wall", () => {
+    const phone = ROOM_ITEMS.find((item) => item.id === 'contact')!;
+    const feet = walkTargetFor(phone);
+    expect(feet).toEqual(poseLayout(phone)!.feet);
+    expect(feet.y).toBeGreaterThan(480);
+  });
+
+  it('on arrival: hides the phone and Ollie, shows the coloured phone pose and the bubble', () => {
+    reduceMotion();
+    renderRoom();
+    const link = screen.getByRole('link', { name: 'Contact' });
+    fireEvent.mouseEnter(link);
+
+    expect(link.dataset.posed).toBe('true');
+    expect(screen.getByTestId('ollie').hidden).toBe(true);
+    const pose = screen.getByTestId('ollie-pose');
+    expect(pose.dataset.pose).toBe('phone');
+    expect(pose.querySelector('img')!.getAttribute('src')).toContain('phone_c');
+    expect(screen.getByTestId('speech-bubble').textContent).toBe('Ring ring! Say hi to Kim!');
+  });
+
+  it('wall items without a pose still use lookup', () => {
+    reduceMotion();
+    renderRoom();
+    fireEvent.mouseEnter(screen.getByRole('button', { name: 'Light switch' }));
+    expect(screen.getByTestId('ollie').dataset.sprite).toBe('lookup');
+    expect(screen.queryByTestId('ollie-pose')).toBeNull();
   });
 });

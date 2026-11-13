@@ -1,6 +1,7 @@
 import type { FriendId } from '../content/types.ts';
 import {
   FRIEND_VISIT,
+  greetSpot,
   HOME,
   ROOM_H,
   ROOM_ITEMS,
@@ -9,6 +10,7 @@ import {
   type Point,
 } from './room.config.ts';
 import { visitorBox } from './visitor.ts';
+import { poseLayout } from './poseLayout.ts';
 import styles from './DebugOverlay.module.css';
 
 const GRID = 50;
@@ -84,6 +86,28 @@ function DebugOverlay({ lastClick, visitor }: DebugOverlayProps) {
               {item.standAt && (
                 <circle cx={item.standAt.x} cy={item.standAt.y} r={5} className={styles.stand} />
               )}
+              {item.kind === 'wall' &&
+                item.pose &&
+                (() => {
+                  const layout = poseLayout(item)!;
+                  return (
+                    <>
+                      <rect
+                        x={layout.box.left}
+                        y={layout.box.top}
+                        width={layout.box.width}
+                        height={layout.box.height}
+                        className={styles.poseBox}
+                      />
+                      <circle
+                        cx={layout.feet.x}
+                        cy={layout.feet.y}
+                        r={5}
+                        className={styles.stand}
+                      />
+                    </>
+                  );
+                })()}
             </g>
           );
         })}
@@ -104,6 +128,7 @@ function DebugOverlay({ lastClick, visitor }: DebugOverlayProps) {
                   <text x={box.left} y={box.top - 4} className={styles.boxText}>
                     {visitor} ×{FRIEND_VISIT.sizeFactor[visitor]}
                   </text>
+                  <circle cx={greetSpot().x} cy={greetSpot().y} r={5} className={styles.stand} />
                 </>
               );
             })()}

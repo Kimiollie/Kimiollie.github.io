@@ -4,8 +4,8 @@ import desk from '../assets/items/desk.webp';
 import deskColour from '../assets/items/desk_c.webp';
 import easel from '../assets/items/easel.webp';
 import easelColour from '../assets/items/easel_c.webp';
-import mailbox from '../assets/items/mailbox.webp';
-import mailboxColour from '../assets/items/mailbox_c.webp';
+import phone from '../assets/items/phone.webp';
+import phoneColour from '../assets/items/phone_c.webp';
 import ball from '../assets/items/ball.webp';
 import ballColour from '../assets/items/ball_c.webp';
 import portraitWall from '../assets/items/portrait_wall.webp';
@@ -17,10 +17,11 @@ import type { ItemImage, ItemPose } from './room.config.ts';
 
 export const roomBackgrounds = { day: roomDay, night: roomNight };
 
-const ollieUrls: Record<string, string> = import.meta.glob('../assets/ollie/*.webp', {
-  eager: true,
-  import: 'default',
-});
+// The old mailbox pose is no longer used (contact is a wall phone now), so it is left out.
+const ollieUrls: Record<string, string> = import.meta.glob(
+  ['../assets/ollie/*.webp', '!../assets/ollie/mailbox*.webp'],
+  { eager: true, import: 'default' },
+);
 
 /** Every Ollie image, for preloading. */
 export const allOllieImages = Object.values(ollieUrls);
@@ -40,7 +41,14 @@ export const ollieSprites: Record<OllieSprite, ItemArt> = {
 export const poseImages: Record<ItemPose, ItemArt> = {
   laptop: sprite('laptop', 873, 924, 22),
   easel: sprite('easel', 861, 794, 22),
-  mailbox: sprite('mailbox', 451, 388),
+  // The pose's phone body is drawn at `body`; it is lined up with the wall phone's body.
+  // `foot` is where Ollie's feet are in the pose: the spot he walks to.
+  phone: {
+    ...sprite('phone', 593, 725, 6),
+    colour: ollieUrls['../assets/ollie/phone_c.webp'],
+    body: { x1: 53, y1: 11, x2: 207, y2: 246 },
+    foot: { x: 440, y: 719 },
+  },
   fetch: sprite('fetch', 389, 324, 7),
 };
 
@@ -67,13 +75,24 @@ export interface ItemArt {
   height: number;
   /** Transparent padding around the drawing, in px, on every side. */
   pad: number;
+  /** Phone body rectangle in image px, for lining up the phone pose with the wall phone. */
+  body?: { x1: number; y1: number; x2: number; y2: number };
+  /** Ollie's feet in image px (poses that are lined up with a wall item). */
+  foot?: { x: number; y: number };
 }
 
 /** White and coloured (hover) version of each floor item. */
 export const itemImages: Record<ItemImage, ItemArt> = {
   desk: { white: desk, colour: deskColour, width: 332, height: 320, pad: 25 },
   easel: { white: easel, colour: easelColour, width: 235, height: 377, pad: 25 },
-  mailbox: { white: mailbox, colour: mailboxColour, width: 226, height: 332, pad: 25 },
+  phone: {
+    white: phone,
+    colour: phoneColour,
+    width: 462,
+    height: 606,
+    pad: 6,
+    body: { x1: 174, y1: 16, x2: 445, y2: 417 },
+  },
   ball: { white: ball, colour: ballColour, width: 242, height: 243, pad: 25 },
 };
 

@@ -1,18 +1,22 @@
-import { useState } from 'react';
 import type { CSSProperties } from 'react';
-import { visitorLine } from '../content/beyond.ts';
 import type { Friend } from '../content/types.ts';
-import SpeechBubble from './SpeechBubble.tsx';
 import { FRIEND_VISIT, boxToPercent } from './room.config.ts';
 import { artInset, friendSprites } from './roomAssets.ts';
 import { visitorBox } from './visitor.ts';
 import styles from './VisitingFriend.module.css';
 
-/** One of Ollie's friends sitting near the door. Decorative: hover shows a name bubble only. */
-function VisitingFriend({ friend }: { friend: Friend }) {
-  const [hovered, setHovered] = useState(false);
+interface VisitingFriendProps {
+  friend: Friend;
+  /** Mouse over the friend: Ollie walks over to say hi. */
+  onHover: () => void;
+  /** Mouse leaves the friend: Ollie walks home. */
+  onLeave: () => void;
+}
+
+/** One of Ollie's friends sitting near the door. Decorative: not focusable, not clickable. */
+function VisitingFriend({ friend, onHover, onLeave }: VisitingFriendProps) {
   const art = friendSprites[friend.id];
-  const { x, y } = FRIEND_VISIT.spot;
+  const { y } = FRIEND_VISIT.spot;
 
   const box = visitorBox(friend.id);
   const style = {
@@ -22,12 +26,7 @@ function VisitingFriend({ friend }: { friend: Friend }) {
 
   return (
     <div aria-hidden="true" data-testid="visiting-friend" data-friend={friend.id}>
-      <div
-        className={styles.friend}
-        style={style}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      >
+      <div className={styles.friend} style={style} onMouseEnter={onHover} onMouseLeave={onLeave}>
         <span className={styles.shadow} />
         <img
           className={styles.sprite}
@@ -37,7 +36,6 @@ function VisitingFriend({ friend }: { friend: Friend }) {
           draggable={false}
         />
       </div>
-      {hovered && <SpeechBubble anchor={{ x, y: box.top }} text={visitorLine(friend.name)} />}
     </div>
   );
 }

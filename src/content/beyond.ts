@@ -40,8 +40,8 @@ export const ollie = {
 
 export const friendsTitle = "Ollie's squad";
 
-/** Name bubble when a friend is visiting the room (PLAN.md 4.3). */
-export const visitorLine = (name: string) => `${name} is visiting!`;
+/** Ollie's greeting when you hover a visiting friend in the room (PLAN.md 4.3). */
+export const greetLine = (name: string) => `Hi, ${name}!`;
 
 /** 404 page title (PLAN.md 4.3). */
 export const notFoundTitle = (name: string) => `Oops, ${name} buried this page.`;

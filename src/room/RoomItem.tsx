@@ -31,7 +31,11 @@ function RoomItem({
     zIndex: Math.round(item.y),
     '--item-colour': item.colour,
   } as CSSProperties;
-  const className = `${styles.item} ${item.kind === 'floor' ? styles.floor : styles.wall}`;
+  const className = [
+    styles.item,
+    item.kind === 'floor' ? styles.floor : styles.wall,
+    item.image ? styles.hasImage : '',
+  ].join(' ');
 
   const images = item.image ? itemImages[item.image] : undefined;
   const imageStyle = images ? artInset(images) : undefined;

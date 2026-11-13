@@ -9,10 +9,11 @@ const projectImages: ImageMap = import.meta.glob('../assets/projects/*.{png,jpg,
   import: 'default',
 });
 
-const ollieImages: ImageMap = import.meta.glob('../assets/ollie/*.{png,webp}', {
-  eager: true,
-  import: 'default',
-});
+// The old mailbox pose is no longer used (contact is a wall phone now).
+const ollieImages: ImageMap = import.meta.glob(
+  ['../assets/ollie/*.{png,webp}', '!../assets/ollie/mailbox*'],
+  { eager: true, import: 'default' },
+);
 
 const portraitImages: ImageMap = import.meta.glob('../assets/portrait.webp', {
   eager: true,

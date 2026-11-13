@@ -1,15 +1,16 @@
 import type { CSSProperties } from 'react';
-import { boxToPercent, poseBox, type ItemPose, type RoomItemConfig } from './room.config.ts';
+import { boxToPercent, type ItemPose, type RoomItemConfig } from './room.config.ts';
+import { poseLayout } from './poseLayout.ts';
 import { artInset, poseImages } from './roomAssets.ts';
 import styles from './Ollie.module.css';
 
-/** Ollie's item pose (e.g. at the laptop), drawn at the item with the depth scale. */
+/** Ollie's item pose (e.g. at the laptop or the phone). Uses the coloured version if there is one. */
 function OlliePose({ item, pose }: { item: RoomItemConfig; pose: ItemPose }) {
   const art = poseImages[pose];
-  const aspect = (art.width - 2 * art.pad) / (art.height - 2 * art.pad);
+  const layout = poseLayout(item)!;
   const style = {
-    ...boxToPercent(poseBox(item, aspect)),
-    zIndex: Math.round(item.y) + 1,
+    ...boxToPercent(layout.box),
+    zIndex: Math.round(Math.max(layout.feet.y, item.y)) + 1,
   } as CSSProperties;
 
   return (
@@ -20,11 +21,11 @@ function OlliePose({ item, pose }: { item: RoomItemConfig; pose: ItemPose }) {
       data-testid="ollie-pose"
       data-pose={pose}
     >
-      <span className={styles.shadow} />
+      {item.kind === 'floor' && <span className={styles.shadow} />}
       <img
         className={styles.sprite}
         style={artInset(art)}
-        src={art.white}
+        src={art.colour}
         alt=""
         draggable={false}
       />
