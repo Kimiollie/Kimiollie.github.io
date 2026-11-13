@@ -4,6 +4,8 @@ import PageHeader from '../components/PageHeader.tsx';
 import { contactLinks, contactPage } from '../content/contact.ts';
 import type { ContactLink } from '../content/types.ts';
 import styles from './Contact.module.css';
+import { pageTitles } from '../content/site.ts';
+import { useDocumentTitle } from '../utils/useDocumentTitle.ts';
 
 function LinkRow({ link }: { link: ContactLink }) {
   const content = (
@@ -28,6 +30,7 @@ function LinkRow({ link }: { link: ContactLink }) {
 }
 
 function Contact() {
+  useDocumentTitle(pageTitles.contact);
   return (
     <>
       <PageHeader

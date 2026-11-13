@@ -3,6 +3,9 @@ import type { ReactNode } from 'react';
 import { RECHECK_MS, storeTheme, storedTheme, themeAt, type Theme } from './dayNight.ts';
 import { ThemeContext } from './themeContext.ts';
 
+/** --bg for day and night (src/styles/tokens.css). */
+const THEME_COLOR: Record<Theme, string> = { day: '#fbf8f2', night: '#151a2c' };
+
 /**
  * Day or night: a manual choice from this visit (sessionStorage), otherwise the local time.
  * Re-checks the time every 5 minutes, but never overrides a manual choice.
@@ -13,6 +16,10 @@ function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
+    // Browser bar colour follows the site's theme (the page background).
+    for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+      meta.setAttribute('content', THEME_COLOR[theme]);
+    }
   }, [theme]);
 
   useEffect(() => {

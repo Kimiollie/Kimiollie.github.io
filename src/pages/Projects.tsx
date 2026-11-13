@@ -4,8 +4,11 @@ import PageHeader from '../components/PageHeader.tsx';
 import ProjectCard from '../components/ProjectCard.tsx';
 import { moreProjects, projects, projectsPage } from '../content/projects.ts';
 import styles from './Projects.module.css';
+import { pageTitles } from '../content/site.ts';
+import { useDocumentTitle } from '../utils/useDocumentTitle.ts';
 
 function Projects() {
+  useDocumentTitle(pageTitles.projects);
   return (
     <>
       <PageHeader

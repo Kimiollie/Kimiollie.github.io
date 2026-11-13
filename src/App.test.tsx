@@ -102,9 +102,7 @@ describe('home', () => {
   it('renders the hero and the "In a hurry?" links', () => {
     renderAt('/');
     expect(screen.getByText('tech-curious').tagName).toBe('MARK');
-    expect(
-      screen.getByText('Software engineering, AI and a hospitality background · Helsinki'),
-    ).toBeDefined();
+    expect(screen.getByText('Software engineering, AI and a hospitality background')).toBeDefined();
     const quick = screen.getByRole('navigation', { name: 'In a hurry?' });
     const labels = [...quick.querySelectorAll('a')].map((a) => a.textContent);
     expect(labels).toEqual(['Projects', 'CV (PDF)', 'LinkedIn ↗', 'GitHub ↗', 'Email']);

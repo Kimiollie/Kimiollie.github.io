@@ -1,10 +1,11 @@
+import { backToRoom, pageTitles } from '../content/site.ts';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { notFoundTitle } from '../content/beyond.ts';
-import { backToRoom } from '../content/site.ts';
 import { pickFriend, type Random } from '../room/visitor.ts';
 import { friendSprites } from '../room/roomAssets.ts';
 import styles from './NotFound.module.css';
+import { useDocumentTitle } from '../utils/useDocumentTitle.ts';
 
 interface NotFoundProps {
   /** Dice for which friend shows up. Injectable for tests; defaults to Math.random. */
@@ -12,6 +13,7 @@ interface NotFoundProps {
 }
 
 function NotFound({ random = Math.random }: NotFoundProps) {
+  useDocumentTitle(pageTitles.notFound);
   const [friend] = useState(() => pickFriend(random));
 
   return (

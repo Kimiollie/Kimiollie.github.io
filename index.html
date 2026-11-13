@@ -9,7 +9,41 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
     />
-    <title>Kim Ngan Tran</title>
+    <title>Kim Ngan Tran · Software, AI and hospitality</title>
+    <meta
+      name="description"
+      content="Kim Ngan Tran: software engineering, AI and a hospitality background"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Browser bar colour: day and night page backgrounds (the script below follows the site's own theme). -->
+    <meta name="theme-color" content="#fbf8f2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#151a2c" media="(prefers-color-scheme: dark)" />
+
+    <!-- Sharing (Open Graph and Twitter / X) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kim Ngan Tran" />
+    <meta property="og:url" content="https://kimiollie.github.io/" />
+    <meta property="og:title" content="Kim Ngan Tran · Software, AI and hospitality" />
+    <meta
+      property="og:description"
+      content="Kim Ngan Tran: software engineering, AI and a hospitality background"
+    />
+    <meta property="og:image" content="https://kimiollie.github.io/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Kim Ngan Tran, with an illustration of Ollie grinning" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kim Ngan Tran · Software, AI and hospitality" />
+    <meta
+      name="twitter:description"
+      content="Kim Ngan Tran: software engineering, AI and a hospitality background"
+    />
+    <meta name="twitter:image" content="https://kimiollie.github.io/og-image.png" />
+    <meta
+      name="twitter:image:alt"
+      content="Kim Ngan Tran, with an illustration of Ollie grinning"
+    />
     <script>
       // Set day/night before the first paint (same rules as src/theme/dayNight.ts).
       (function () {
@@ -22,6 +56,10 @@
           theme = hour >= 7 && hour < 18 ? 'day' : 'night';
         }
         document.documentElement.dataset.theme = theme;
+        var themeColor = theme === 'day' ? '#fbf8f2' : '#151a2c';
+        document.querySelectorAll('meta[name="theme-color"]').forEach(function (meta) {
+          meta.setAttribute('content', themeColor);
+        });
 
         // Desktop home page: start downloading this time of day's room picture straight away.
         if (location.pathname === '/' && matchMedia('(min-width: 820px)').matches) {

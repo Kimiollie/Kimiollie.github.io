@@ -22,6 +22,16 @@ export const skipLinkLabel = 'Skip to content';
 
 export const backToRoom = 'Back to the room';
 
+/** Browser tab titles (step 4.3). The home title must not contain the word "student". */
+export const pageTitles = {
+  home: 'Kim Ngan Tran · Software, AI and hospitality',
+  projects: 'Projects · Kim Ngan Tran',
+  about: 'About · Kim Ngan Tran',
+  beyond: 'Beyond code · Kim Ngan Tran',
+  contact: 'Contact · Kim Ngan Tran',
+  notFound: 'Page not found · Kim Ngan Tran',
+};
+
 export const footerText = 'Illustrations of Ollie, the real boss of this house. Built by Kim.';
 
 export const hero = {
@@ -31,7 +41,7 @@ export const hero = {
     highlight: 'tech-curious',
     after: ' weirdo who likes logic puzzles.',
   },
-  sub: 'Software engineering, AI and a hospitality background · Helsinki',
+  sub: 'Software engineering, AI and a hospitality background',
   /** Desktop only. */
   hint: 'Hover things in the room. Ollie will show you around.',
 };

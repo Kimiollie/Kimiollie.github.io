@@ -14,6 +14,8 @@ import {
 import type { Badge } from '../content/types.ts';
 import { PORTRAIT_SIZE, badgeImage, portraitImage } from '../utils/images.ts';
 import styles from './About.module.css';
+import { pageTitles } from '../content/site.ts';
+import { useDocumentTitle } from '../utils/useDocumentTitle.ts';
 
 function BadgeItem({ badge }: { badge: Badge }) {
   const alt = `${badge.name}, ${badge.issuer}`;
@@ -44,6 +46,7 @@ function BadgeItem({ badge }: { badge: Badge }) {
 }
 
 function About() {
+  useDocumentTitle(pageTitles.about);
   return (
     <>
       <PageHeader

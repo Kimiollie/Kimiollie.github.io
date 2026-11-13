@@ -12,8 +12,11 @@ import {
 } from '../content/beyond.ts';
 import { FRIEND_HEAD_SIZE, friendHead } from '../utils/images.ts';
 import styles from './Beyond.module.css';
+import { pageTitles } from '../content/site.ts';
+import { useDocumentTitle } from '../utils/useDocumentTitle.ts';
 
 function Beyond() {
+  useDocumentTitle(pageTitles.beyond);
   return (
     <>
       <PageHeader
