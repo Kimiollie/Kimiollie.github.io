@@ -1,36 +1,19 @@
-import { Link } from 'react-router-dom';
 import ExternalAnchor from '../components/ExternalAnchor.tsx';
 import NeedsReview from '../components/NeedsReview.tsx';
+import PageHeader from '../components/PageHeader.tsx';
 import ProjectCard from '../components/ProjectCard.tsx';
 import { moreProjects, projects, projectsPage } from '../content/projects.ts';
-import { olliePose } from '../utils/images.ts';
 import styles from './Projects.module.css';
 
 function Projects() {
-  const laptopPose = olliePose('laptop');
-
   return (
     <>
-      <header className={styles.head}>
-        <div className={styles.headText}>
-          <h1 className={styles.title}>
-            <span className={styles.accent} aria-hidden="true" />
-            {projectsPage.title}
-          </h1>
-          <p className={styles.intro}>{projectsPage.intro}</p>
-          <Link to="/" className={styles.back}>
-            <span aria-hidden="true">← </span>
-            {projectsPage.backLink}
-          </Link>
-        </div>
-        <div className={styles.pose} aria-hidden="true">
-          {laptopPose ? (
-            <img src={laptopPose} alt="" />
-          ) : (
-            <div className={styles.posePlaceholder} />
-          )}
-        </div>
-      </header>
+      <PageHeader
+        title={projectsPage.title}
+        sub={projectsPage.intro}
+        accent="var(--c-projects)"
+        pose="laptop"
+      />
 
       <div className={styles.grid}>
         {projects.map((project) => (

@@ -5,7 +5,6 @@ export const projectsPage = {
   title: 'Projects',
   intro:
     'Mobile, web, IoT and industrial projects, some solo and some in teams. For team projects I describe only my own part.',
-  backLink: 'Back to the room',
   moreTitle: 'More projects',
 };
 

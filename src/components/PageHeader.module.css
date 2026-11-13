@@ -1,6 +1,13 @@
 .head {
-  max-width: 720px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
   margin-bottom: 36px;
+}
+
+.text {
+  max-width: 640px;
 }
 
 .title {
@@ -15,10 +22,35 @@
   height: 0.55em;
   border: 2px solid var(--line);
   border-radius: 4px;
+  background: var(--accent);
 }
 
 .sub {
-  margin: 0;
   color: var(--muted);
   font-size: 1.05rem;
+}
+
+.back {
+  font-weight: 600;
+}
+
+.back:hover {
+  color: var(--accent);
+}
+
+.pose {
+  flex: none;
+  width: 190px;
+}
+
+.posePlaceholder {
+  aspect-ratio: 1;
+  border: 2px dashed var(--muted);
+  border-radius: 18px;
+}
+
+@media (max-width: 599.98px) {
+  .pose {
+    display: none;
+  }
 }

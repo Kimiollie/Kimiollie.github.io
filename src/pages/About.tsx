@@ -46,7 +46,12 @@ function BadgeItem({ badge }: { badge: Badge }) {
 function About() {
   return (
     <>
-      <PageHeader title={aboutPage.title} sub={aboutPage.sub} accent="var(--c-about)" />
+      <PageHeader
+        title={aboutPage.title}
+        sub={aboutPage.sub}
+        accent="var(--c-about)"
+        pose="lookup"
+      />
 
       <div className={styles.layout}>
         <div className={styles.left}>

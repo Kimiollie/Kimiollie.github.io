@@ -1,7 +1,16 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import About from './About.tsx';
 import { badges } from '../content/about.ts';
+
+function renderPage() {
+  return render(
+    <MemoryRouter>
+      <About />
+    </MemoryRouter>,
+  );
+}
 
 afterEach(() => {
   cleanup();
@@ -9,18 +18,18 @@ afterEach(() => {
 
 describe('About page', () => {
   it('renders 6 timeline entries', () => {
-    render(<About />);
+    renderPage();
     const timeline = screen.getByRole('region', { name: 'Timeline' });
     expect(timeline.querySelectorAll('li')).toHaveLength(6);
   });
 
   it('renders 3 fact tiles', () => {
-    render(<About />);
+    renderPage();
     expect(screen.getAllByTestId('fact')).toHaveLength(3);
   });
 
   it('links each badge with a verify URL safely, named by name and issuer', () => {
-    render(<About />);
+    renderPage();
     const withUrl = badges.filter((badge) => badge.verifyUrl);
     expect(withUrl).toHaveLength(3);
 
@@ -33,7 +42,7 @@ describe('About page', () => {
   });
 
   it('does not link a badge that has no verify URL', () => {
-    render(<About />);
+    renderPage();
     expect(
       screen.queryByRole('link', { name: 'Ethical Hacker, Cisco Networking Academy' }),
     ).toBeNull();

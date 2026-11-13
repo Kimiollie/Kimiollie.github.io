@@ -16,7 +16,12 @@ import styles from './Beyond.module.css';
 function Beyond() {
   return (
     <>
-      <PageHeader title={beyondPage.title} sub={beyondPage.sub} accent="var(--c-beyond)" />
+      <PageHeader
+        title={beyondPage.title}
+        sub={beyondPage.sub}
+        accent="var(--c-beyond)"
+        pose="easel"
+      />
 
       <div className={styles.sections}>
         <section aria-labelledby="paintings-title">

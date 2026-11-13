@@ -7,6 +7,8 @@ export const LINKEDIN_URL = 'https://www.linkedin.com/in/kim-tran-do';
 export const GITHUB_URL = 'https://github.com/Kimiollie';
 export const REPO_URL = 'https://github.com/Kimiollie/Kimiollie.github.io';
 
+export const backToRoom = 'Back to the room';
+
 export const footerText = 'Illustrations of Ollie, the real boss of this house. Built by Kim.';
 
 export const hero = {
