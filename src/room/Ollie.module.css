@@ -1,0 +1,22 @@
+.ollie {
+  position: absolute;
+  pointer-events: none;
+}
+
+.sprite {
+  position: absolute;
+  max-width: none;
+  user-select: none;
+}
+
+/* Soft contact shadow, like the items. */
+.shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 78%;
+  aspect-ratio: 5 / 1;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 12%);
+  transform: translate(-50%, 50%);
+}

@@ -13,6 +13,29 @@ import type { ItemImage } from './room.config.ts';
 
 export const roomBackgrounds = { day: roomDay, night: roomNight };
 
+const ollieUrls: Record<string, string> = import.meta.glob('../assets/ollie/*.webp', {
+  eager: true,
+  import: 'default',
+});
+
+/** Every Ollie image, for preloading. */
+export const allOllieImages = Object.values(ollieUrls);
+
+export type OllieSprite = 'sit' | 'walk_1' | 'walk_2' | 'walk_3';
+
+/** Ollie's room sprites, with natural size and transparent padding (px). */
+export const ollieSprites: Record<OllieSprite, ItemArt> = {
+  sit: sprite('sit', 285, 392),
+  walk_1: sprite('walk_1', 405, 321),
+  walk_2: sprite('walk_2', 340, 329),
+  walk_3: sprite('walk_3', 394, 325),
+};
+
+function sprite(name: string, width: number, height: number): ItemArt {
+  const url = ollieUrls[`../assets/ollie/${name}.webp`];
+  return { white: url, colour: url, width, height, pad: 8 };
+}
+
 /** Pictures shown inside wall items. */
 export const wallPictures = { portraitWall };
 

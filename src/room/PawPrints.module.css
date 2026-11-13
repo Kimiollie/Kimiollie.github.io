@@ -1,0 +1,35 @@
+/* Paw prints lie on the floor, below every item and Ollie. */
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.paw {
+  position: absolute;
+  aspect-ratio: 1;
+  fill: rgb(20 20 22 / 55%);
+  /* A light squash so the prints look like they lie on the floor. */
+  transform: translate(-50%, -50%) rotate(var(--paw-rotate)) scaleY(0.85);
+  animation: paw-fade var(--paw-fade) linear forwards;
+}
+
+[data-theme='night'] .paw {
+  fill: rgb(242 238 230 / 45%);
+}
+
+/* Fully visible for the first half, then fade out. */
+@keyframes paw-fade {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

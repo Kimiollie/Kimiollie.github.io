@@ -102,3 +102,38 @@ describe('wall portrait', () => {
     expect(parseFloat(portrait.style.height)).toBeCloseTo((48 / 64) * 100);
   });
 });
+
+describe('Ollie in the room', () => {
+  it('starts sitting in the dog bed', () => {
+    renderRoom();
+    const ollie = screen.getByTestId('ollie');
+    expect(ollie.dataset.sprite).toBe('sit');
+    expect(ollie.style.zIndex).toBe('585');
+    expect(ollie.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('has debug walk buttons only in ?debug mode', () => {
+    renderRoom('/');
+    expect(screen.queryByRole('button', { name: 'Walk home' })).toBeNull();
+    cleanup();
+
+    renderRoom('/?debug');
+    expect(screen.getByRole('button', { name: 'Walk to projects' })).toBeDefined();
+    expect(screen.getByRole('button', { name: 'Walk home' })).toBeDefined();
+  });
+
+  it('jumps to the target with prefers-reduced-motion', () => {
+    vi.stubGlobal('matchMedia', (query: string) => ({
+      matches: query.includes('reduce'),
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    }));
+    renderRoom('/?debug');
+    fireEvent.click(screen.getByRole('button', { name: 'Walk to contact' }));
+
+    const ollie = screen.getByTestId('ollie');
+    expect(ollie.dataset.sprite).toBe('sit');
+    expect(ollie.style.zIndex).toBe('655');
+    vi.unstubAllGlobals();
+  });
+});

@@ -20,3 +20,22 @@
   user-select: none;
   pointer-events: none;
 }
+
+.debugWalk {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.debugWalk button {
+  padding: 4px 10px;
+  border: 1.5px dashed rgb(0 90 255);
+  border-radius: 6px;
+  background: rgb(0 120 255 / 8%);
+  color: inherit;
+  font:
+    600 13px ui-monospace,
+    monospace;
+  cursor: pointer;
+}

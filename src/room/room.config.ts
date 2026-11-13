@@ -157,8 +157,36 @@ export const ROOM_ITEMS: RoomItemConfig[] = [
 /** Ollie's home: the dog bed. */
 export const HOME: Point = { x: 688, y: 585 };
 
-/** Ollie's sprite heights in image px, before the depth scale. */
+/** Ollie's sprite heights in image px, before the depth scale (PLAN.md 4.2). */
 export const OLLIE_HEIGHT = { sit: 135, walk: 125 };
+
+/** Walking (PLAN.md 4.3). */
+export const WALK = {
+  /** Image px per second. */
+  speed: 300,
+  /** How far the path dips towards the viewer, as a share of the distance… */
+  dipRatio: 0.18,
+  /** …but never more than this many image px. */
+  maxDip: 70,
+  /** Each walk frame is shown this long (ms). */
+  frameMs: 150,
+};
+
+export const PAW_PRINTS = {
+  everyMs: 240,
+  fadeMs: 1600,
+  max: 12,
+  /** Paw print size in image px, before the depth scale. */
+  size: 22,
+  /** Left and right paws sit this many × size to either side of the path. */
+  trackOffset: 0.3,
+};
+
+/** Where Ollie walks to for an item: next to the item's pose spot, or below a wall item. */
+export function walkTarget(item: RoomItemConfig): Point {
+  if (item.standAt) return item.standAt;
+  return { x: item.x + (item.poseDx ?? 0), y: item.y };
+}
 
 export interface Box {
   left: number;
