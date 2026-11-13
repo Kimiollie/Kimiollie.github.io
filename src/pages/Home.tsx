@@ -4,6 +4,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import ExternalAnchor from '../components/ExternalAnchor.tsx';
 import { hero, quickLinks, quickLinksTitle } from '../content/site.ts';
 import type { QuickLink } from '../content/types.ts';
+import MobileRoom from '../room/MobileRoom.tsx';
 import Room from '../room/Room.tsx';
 import { useMediaQuery } from '../utils/useMediaQuery.ts';
 import styles from './Home.module.css';
@@ -65,7 +66,9 @@ function Home() {
         <p className={styles.hint}>{hero.hint}</p>
       </section>
 
-      {/* The room is desktop only; mobile gets its own layout in step 3.6. */}
+      {/* Desktop: the interactive room (with the visiting friend and the ?edit editor).
+          Below 820px: Ollie and a grid of item cards instead. */}
+      {!isDesktop && <MobileRoom />}
       {isDesktop && (
         <div className={styles.room}>
           {editing && RoomEditor ? (

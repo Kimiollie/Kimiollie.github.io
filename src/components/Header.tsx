@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { BRAND, CV_URL, cvButtonLabel } from '../content/site.ts';
+import { BRAND, CV_URL, cvButtonLabel, cvButtonShortLabel } from '../content/site.ts';
 import ThemeToggle from './ThemeToggle.tsx';
 import styles from './Header.module.css';
 
@@ -62,8 +62,11 @@ function Header() {
 
         <ThemeToggle />
 
-        <a href={CV_URL} download className={styles.cv}>
-          {cvButtonLabel}
+        <a href={CV_URL} download className={styles.cv} aria-label={cvButtonLabel}>
+          <span className={styles.cvLong}>{cvButtonLabel}</span>
+          <span className={styles.cvShort} aria-hidden="true">
+            {cvButtonShortLabel}
+          </span>
         </a>
       </div>
     </header>

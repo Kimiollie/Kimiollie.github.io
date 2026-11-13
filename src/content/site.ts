@@ -8,6 +8,8 @@ export const GITHUB_URL = 'https://github.com/Kimiollie';
 export const REPO_URL = 'https://github.com/Kimiollie/Kimiollie.github.io';
 
 export const cvButtonLabel = 'Fetch CV';
+/** Shown instead of cvButtonLabel on very narrow screens (the link keeps the full name). */
+export const cvButtonShortLabel = 'CV';
 
 /** Header day/night button (screen-reader label and tooltip). */
 export const themeToggleLabels = {

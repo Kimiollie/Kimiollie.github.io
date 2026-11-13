@@ -1,0 +1,170 @@
+.mobile {
+  margin-bottom: 32px;
+}
+
+/* Ollie and his speech bubble */
+.intro {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.ollie {
+  flex: none;
+  width: 92px;
+  height: auto;
+}
+
+.bubble {
+  position: relative;
+  margin: 0;
+  padding: 10px 14px;
+  border: 2px solid #141416;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #141416;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+/* Tail pointing left, at Ollie */
+.bubble::before,
+.bubble::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  border-style: solid;
+  transform: translateY(-50%);
+}
+
+.bubble::before {
+  left: -14px;
+  border-width: 9px 14px 9px 0;
+  border-color: transparent #141416 transparent transparent;
+}
+
+.bubble::after {
+  left: -10px;
+  border-width: 7px 11px 7px 0;
+  border-color: transparent #ffffff transparent transparent;
+}
+
+/* Item cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  text-decoration: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.card:hover,
+.card:focus-visible,
+.card[data-posing] {
+  box-shadow: 0 0 0 3px var(--item-colour);
+}
+
+.card:focus-visible {
+  outline: none;
+}
+
+.media {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  border-bottom: 2px solid var(--line);
+  background: var(--bg);
+}
+
+.image,
+.pose {
+  position: absolute;
+  inset: 10px;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  object-fit: contain;
+  transition: opacity 0.15s ease;
+}
+
+.portrait {
+  inset: 14px 25%;
+  width: 50%;
+  height: calc(100% - 28px);
+  border: 3px solid #141416;
+  border-radius: 3px;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+/* Tap: the item gives way to Ollie's pose for a moment */
+.pose {
+  opacity: 0;
+}
+
+.card[data-posing] .pose {
+  opacity: 1;
+}
+
+.card[data-posing] .image {
+  opacity: 0;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px 12px;
+}
+
+.name {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.line {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+/* The CV card: image on the left, text on the right */
+.wide .card {
+  flex-direction: row;
+  align-items: center;
+}
+
+.wide .media {
+  flex: none;
+  width: 34%;
+  border-right: 2px solid var(--line);
+  border-bottom: 0;
+  align-self: stretch;
+}
+
+/* Night: a faint light outline keeps Ollie visible */
+[data-theme='night'] .ollie,
+[data-theme='night'] .pose {
+  filter: drop-shadow(0 0 1.5px rgb(255 255 255 / 85%));
+}

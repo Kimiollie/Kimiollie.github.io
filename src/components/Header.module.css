@@ -77,6 +77,10 @@
   cursor: pointer;
 }
 
+.cvShort {
+  display: none;
+}
+
 .cv {
   background: var(--ink);
   color: var(--bg);
@@ -137,5 +141,16 @@
   .cv,
   .menuButton {
     padding: 7px 12px;
+  }
+}
+
+/* Very narrow phones: brand, Menu, day/night and the CV button must fit on one line. */
+@media (max-width: 439.98px) {
+  .cvLong {
+    display: none;
+  }
+
+  .cvShort {
+    display: inline;
   }
 }
