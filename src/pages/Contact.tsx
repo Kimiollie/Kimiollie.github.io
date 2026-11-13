@@ -1,5 +1,7 @@
+import { contactPage } from '../content/contact.ts';
+
 function Contact() {
-  return <h1>Say hi</h1>;
+  return <h1>{contactPage.title}</h1>;
 }
 
 export default Contact;

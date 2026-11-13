@@ -1,0 +1,13 @@
+.marker {
+  display: inline-block;
+  margin-inline: 6px;
+  padding: 1px 8px;
+  border: 1.5px dashed #141416;
+  border-radius: 6px;
+  background: #ffc828;
+  color: #141416;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  vertical-align: middle;
+}

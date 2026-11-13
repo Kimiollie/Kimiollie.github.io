@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import { BRAND, CV_URL } from '../content/site.ts';
 import styles from './Header.module.css';
 
 const NAV_LINKS = [
@@ -8,8 +9,6 @@ const NAV_LINKS = [
   { to: '/beyond', label: 'Beyond code' },
   { to: '/contact', label: 'Contact' },
 ] as const;
-
-const CV_URL = '/Kim_Ngan_Tran_CV.pdf';
 
 function Header() {
   const { pathname } = useLocation();
@@ -35,7 +34,7 @@ function Header() {
       <div className={`wrap ${styles.inner}`}>
         <Link to="/" className={styles.brand}>
           <span className={styles.dot} aria-hidden="true" />
-          Kim Ngan Tran
+          {BRAND}
         </Link>
 
         <nav className={styles.nav} aria-label="Main">
