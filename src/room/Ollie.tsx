@@ -11,9 +11,27 @@ interface OllieProps {
   position: Point;
   isWalking: boolean;
   direction: Direction;
+  /** Sprite when standing still. */
+  still?: 'sit' | 'lookup';
+  /** Height of the still sprite in image px (before the depth scale). */
+  stillHeight?: number;
+  /** Hidden while one of his item poses is shown. */
+  hidden?: boolean;
 }
 
-function Ollie({ position, isWalking, direction }: OllieProps) {
+/** Ollie's top-centre in image px for a still sprite: where the speech bubble's tail points. */
+export function ollieTop(position: Point, height: number): Point {
+  return { x: position.x, y: position.y - height * depthScale(position.y) };
+}
+
+function Ollie({
+  position,
+  isWalking,
+  direction,
+  still = 'sit',
+  stillHeight = OLLIE_HEIGHT.sit,
+  hidden = false,
+}: OllieProps) {
   const [frame, setFrame] = useState(0);
 
   // Preload every Ollie image once, so poses never flash in later.
@@ -30,12 +48,12 @@ function Ollie({ position, isWalking, direction }: OllieProps) {
     return () => window.clearInterval(timer);
   }, [isWalking]);
 
-  const spriteName: OllieSprite = isWalking ? WALK_CYCLE[frame % WALK_CYCLE.length] : 'sit';
+  const spriteName: OllieSprite = isWalking ? WALK_CYCLE[frame % WALK_CYCLE.length] : still;
   const sprite = ollieSprites[spriteName];
   const contentW = sprite.width - 2 * sprite.pad;
   const contentH = sprite.height - 2 * sprite.pad;
 
-  const height = (isWalking ? OLLIE_HEIGHT.walk : OLLIE_HEIGHT.sit) * depthScale(position.y);
+  const height = (isWalking ? OLLIE_HEIGHT.walk : stillHeight) * depthScale(position.y);
   const width = (height * contentW) / contentH;
   const box = { left: position.x - width / 2, top: position.y - height, width, height };
 
@@ -47,6 +65,7 @@ function Ollie({ position, isWalking, direction }: OllieProps) {
       className={styles.ollie}
       style={style}
       aria-hidden="true"
+      hidden={hidden}
       data-testid="ollie"
       data-sprite={spriteName}
     >

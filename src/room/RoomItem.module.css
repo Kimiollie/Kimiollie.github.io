@@ -7,7 +7,7 @@
   background: none;
   color: inherit;
   font: inherit;
-  cursor: pointer;
+  cursor: inherit;
 }
 
 .item:focus-visible {
@@ -28,9 +28,15 @@
   transition: opacity 0.25s ease;
 }
 
-.item:hover .colour,
-.item:focus-visible .colour {
+.item[data-active] .colour {
   opacity: 1;
+}
+
+/* Ollie's pose replaces the item while he is there. */
+.item[data-posed] .white,
+.item[data-posed] .colour {
+  opacity: 0;
+  transition: opacity 0.15s ease;
 }
 
 .floor:focus-visible .white,
@@ -59,8 +65,7 @@
   transition: filter 0.3s ease;
 }
 
-.item:hover .picture,
-.item:focus-visible .picture {
+.item[data-active] .picture {
   filter: grayscale(0);
 }
 
@@ -70,8 +75,7 @@
   transition: box-shadow 0.25s ease;
 }
 
-.wall:hover,
-.wall:focus-visible {
+.wall[data-active] {
   box-shadow:
     0 0 0 3px var(--item-colour),
     0 0 16px 6px color-mix(in srgb, var(--item-colour) 55%, transparent);
@@ -98,8 +102,12 @@
   pointer-events: none;
 }
 
-.item:hover .label,
-.item:focus-visible .label {
+.item[data-active] .label {
   opacity: 1;
   transform: translate(-50%, 0);
+}
+
+/* At a floor item the speech bubble takes over from the label. */
+.item[data-posed] .label {
+  opacity: 0;
 }

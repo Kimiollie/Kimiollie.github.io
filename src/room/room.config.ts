@@ -25,6 +25,9 @@ export type RoomAction =
 
 export type ItemImage = 'desk' | 'easel' | 'mailbox' | 'ball';
 
+/** Ollie's poses at floor items. Wall items use the lookup sprite instead. */
+export type ItemPose = 'laptop' | 'easel' | 'mailbox' | 'fetch';
+
 export interface RoomItemConfig {
   id: RoomItemKey;
   /** Floor items stand on the floor and get the depth scale; wall items do not. */
@@ -42,9 +45,11 @@ export interface RoomItemConfig {
   label: string;
   /** Floor items: src/assets/items/<image>.webp and <image>_c.webp. */
   image?: ItemImage;
-  /** Ollie's pose at this item (used from step 3.4). */
-  pose?: string;
+  /** Floor items: Ollie's pose, shown at the item when he arrives. */
+  pose?: ItemPose;
+  /** Pose x offset from the item, in image px. */
   poseDx?: number;
+  /** Pose (or lookup sprite) height in image px, before the depth scale. */
   poseH?: number;
   /** Wall items: where Ollie stands below the item. */
   standAt?: Point;
@@ -88,7 +93,6 @@ export const ROOM_ITEMS: RoomItemConfig[] = [
     action: { type: 'route', to: '/about' },
     colour: 'var(--c-about)',
     label: roomLabels.about,
-    pose: 'lookup',
     poseH: 135,
     standAt: { x: 876, y: 540 },
     // Inside the frame's inner white area.
@@ -149,7 +153,7 @@ export const ROOM_ITEMS: RoomItemConfig[] = [
     action: { type: 'toggleTheme' },
     colour: 'var(--c-about)',
     label: roomLabels.switch,
-    pose: 'lookup',
+    poseH: 135,
     standAt: { x: 1095, y: 560 },
   },
 ];
@@ -170,6 +174,13 @@ export const WALK = {
   maxDip: 70,
   /** Each walk frame is shown this long (ms). */
   frameMs: 150,
+};
+
+/** Idle at home: every 5 s, a 50% chance of looking up for 1.5 s (PLAN.md 4.3). */
+export const IDLE = {
+  everyMs: 5000,
+  chance: 0.5,
+  lookupMs: 1500,
 };
 
 export const PAW_PRINTS = {
@@ -212,6 +223,17 @@ export function pictureToPercent(item: RoomItemConfig, picture: WallPicture) {
     height: `${((picture.y2 - picture.y1) / box.height) * 100}%`,
   };
 }
+
+/** Where the item's pose is drawn, in image px (bottom-centre at the item, shifted by poseDx). */
+export function poseBox(item: RoomItemConfig, aspect: number): Box {
+  const height = (item.poseH ?? 0) * depthScale(item.y);
+  const width = height * aspect;
+  const x = item.x + (item.poseDx ?? 0);
+  return { left: x - width / 2, top: item.y - height, width, height };
+}
+
+/** Items in keyboard order: left to right across the room. */
+export const ITEMS_IN_TAB_ORDER = [...ROOM_ITEMS].sort((a, b) => a.x - b.x);
 
 /** The same box as CSS percentages of the room, so the room scales with the screen. */
 export function boxToPercent(box: Box) {

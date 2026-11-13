@@ -9,7 +9,7 @@ import mailboxColour from '../assets/items/mailbox_c.webp';
 import ball from '../assets/items/ball.webp';
 import ballColour from '../assets/items/ball_c.webp';
 import portraitWall from '../assets/items/portrait_wall.webp';
-import type { ItemImage } from './room.config.ts';
+import type { ItemImage, ItemPose } from './room.config.ts';
 
 export const roomBackgrounds = { day: roomDay, night: roomNight };
 
@@ -21,19 +21,28 @@ const ollieUrls: Record<string, string> = import.meta.glob('../assets/ollie/*.we
 /** Every Ollie image, for preloading. */
 export const allOllieImages = Object.values(ollieUrls);
 
-export type OllieSprite = 'sit' | 'walk_1' | 'walk_2' | 'walk_3';
+export type OllieSprite = 'sit' | 'lookup' | 'walk_1' | 'walk_2' | 'walk_3';
 
 /** Ollie's room sprites, with natural size and transparent padding (px). */
 export const ollieSprites: Record<OllieSprite, ItemArt> = {
   sit: sprite('sit', 285, 392),
+  lookup: sprite('lookup', 291, 396),
   walk_1: sprite('walk_1', 405, 321),
   walk_2: sprite('walk_2', 340, 329),
   walk_3: sprite('walk_3', 394, 325),
 };
 
-function sprite(name: string, width: number, height: number): ItemArt {
+/** Ollie's item poses (each includes its item). */
+export const poseImages: Record<ItemPose, ItemArt> = {
+  laptop: sprite('laptop', 873, 924, 22),
+  easel: sprite('easel', 861, 794, 22),
+  mailbox: sprite('mailbox', 451, 388),
+  fetch: sprite('fetch', 389, 324, 7),
+};
+
+function sprite(name: string, width: number, height: number, pad = 8): ItemArt {
   const url = ollieUrls[`../assets/ollie/${name}.webp`];
-  return { white: url, colour: url, width, height, pad: 8 };
+  return { white: url, colour: url, width, height, pad };
 }
 
 /** Pictures shown inside wall items. */

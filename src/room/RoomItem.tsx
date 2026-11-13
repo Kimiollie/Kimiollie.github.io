@@ -7,11 +7,16 @@ import styles from './RoomItem.module.css';
 
 interface RoomItemProps {
   item: RoomItemConfig;
+  /** Hovered or focused: coloured, label shown, Ollie walks here. */
+  active: boolean;
+  /** Ollie's pose is shown here, so the item's own image is hidden. */
+  posed: boolean;
+  onActivate: () => void;
   /** Called when the light switch is used (theme toggling comes in step 3.5). */
   onToggleTheme?: () => void;
 }
 
-function RoomItem({ item, onToggleTheme }: RoomItemProps) {
+function RoomItem({ item, active, posed, onActivate, onToggleTheme }: RoomItemProps) {
   const style = {
     ...boxToPercent(itemBox(item)),
     zIndex: Math.round(item.y),
@@ -63,6 +68,10 @@ function RoomItem({ item, onToggleTheme }: RoomItemProps) {
     style,
     'aria-label': item.label,
     'data-item': item.id,
+    'data-active': active || undefined,
+    'data-posed': posed || undefined,
+    onMouseEnter: onActivate,
+    onFocus: onActivate,
   };
 
   switch (item.action.type) {

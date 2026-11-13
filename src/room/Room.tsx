@@ -1,21 +1,89 @@
-import { useState } from 'react';
-import type { MouseEvent } from 'react';
+import { useEffect, useState } from 'react';
+import type { FocusEvent, MouseEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { roomLabel } from '../content/site.ts';
+import { lightSwitchLines, ollieLines, roomLabel } from '../content/site.ts';
 import DebugOverlay from './DebugOverlay.tsx';
-import Ollie from './Ollie.tsx';
+import Ollie, { ollieTop } from './Ollie.tsx';
+import OlliePose from './OlliePose.tsx';
 import PawPrints from './PawPrints.tsx';
 import RoomItem from './RoomItem.tsx';
-import { HOME, ROOM_H, ROOM_ITEMS, ROOM_W, walkTarget, type Point } from './room.config.ts';
+import SpeechBubble from './SpeechBubble.tsx';
+import {
+  HOME,
+  IDLE,
+  ITEMS_IN_TAB_ORDER,
+  ROOM_H,
+  ROOM_ITEMS,
+  ROOM_W,
+  poseBox,
+  walkTarget,
+  type Point,
+  type RoomItemConfig,
+  type RoomItemKey,
+} from './room.config.ts';
+import { poseImages, roomBackgrounds } from './roomAssets.ts';
 import { useWalker } from './useWalker.ts';
-import { roomBackgrounds } from './roomAssets.ts';
 import styles from './Room.module.css';
+
+const near = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y) < 0.5;
+
+function lineFor(item: RoomItemConfig): string {
+  // Step 3.5 makes the switch line follow the theme; by day the switch turns the lights off.
+  return item.id === 'switch' ? lightSwitchLines.off : ollieLines[item.id];
+}
+
+/** Top-centre of the item's pose, for the speech bubble. */
+function poseTop(item: RoomItemConfig): Point {
+  const art = poseImages[item.pose!];
+  const box = poseBox(item, (art.width - 2 * art.pad) / (art.height - 2 * art.pad));
+  return { x: box.left + box.width / 2, y: box.top };
+}
 
 function Room() {
   const [searchParams] = useSearchParams();
   const debug = searchParams.has('debug');
   const [lastClick, setLastClick] = useState<Point | null>(null);
+  const [activeId, setActiveId] = useState<RoomItemKey | null>(null);
+  const [idleLookup, setIdleLookup] = useState(false);
   const { position, isWalking, direction, walkTo, reducedMotion } = useWalker(HOME);
+
+  const active = ROOM_ITEMS.find((item) => item.id === activeId) ?? null;
+  const arrived = active !== null && !isWalking && near(position, walkTarget(active));
+  const posedAtFloor = arrived && active.kind === 'floor' && active.pose ? active : null;
+  const lookingUpAtWall = arrived && active.kind === 'wall';
+  const idleAtHome = active === null && !isWalking && near(position, HOME);
+
+  // Idle at home: now and then, Ollie looks up for a moment.
+  useEffect(() => {
+    if (!idleAtHome) return;
+    let lookupTimer: number | undefined;
+    const timer = window.setInterval(() => {
+      if (Math.random() < IDLE.chance) {
+        setIdleLookup(true);
+        lookupTimer = window.setTimeout(() => setIdleLookup(false), IDLE.lookupMs);
+      }
+    }, IDLE.everyMs);
+    return () => {
+      window.clearInterval(timer);
+      window.clearTimeout(lookupTimer);
+    };
+  }, [idleAtHome]);
+
+  const activate = (item: RoomItemConfig) => {
+    if (item.id === activeId) return;
+    setActiveId(item.id);
+    walkTo(walkTarget(item));
+  };
+
+  const goHome = () => {
+    if (activeId === null) return;
+    setActiveId(null);
+    walkTo(HOME);
+  };
+
+  const handleBlur = (event: FocusEvent<HTMLElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) goHome();
+  };
 
   // Debug mode: every click reports image coordinates instead of following links.
   const handleDebugClick = (event: MouseEvent<HTMLElement>) => {
@@ -30,37 +98,48 @@ function Room() {
     setLastClick(point);
   };
 
-  return (
-    <>
-      <section
-        className={styles.room}
-        aria-label={roomLabel}
-        onClickCapture={debug ? handleDebugClick : undefined}
-        data-debug={debug || undefined}
-      >
-        <img className={styles.background} src={roomBackgrounds.day} alt="" draggable={false} />
-        {ROOM_ITEMS.map((item) => (
-          <RoomItem key={item.id} item={item} />
-        ))}
-        <PawPrints position={position} isWalking={isWalking} reducedMotion={reducedMotion} />
-        <Ollie position={position} isWalking={isWalking} direction={direction} />
-        {debug && <DebugOverlay lastClick={lastClick} />}
-      </section>
+  let bubble: { anchor: Point; text: string } | null = null;
+  if (posedAtFloor) {
+    bubble = { anchor: poseTop(posedAtFloor), text: lineFor(posedAtFloor) };
+  } else if (lookingUpAtWall) {
+    bubble = {
+      anchor: ollieTop(position, active.poseH ?? 135),
+      text: lineFor(active),
+    };
+  }
 
-      {/* Temporary (step 3.3): walk Ollie around in ?debug mode. Hover takes over in step 3.4. */}
-      {debug && (
-        <div className={styles.debugWalk}>
-          {ROOM_ITEMS.map((item) => (
-            <button key={item.id} type="button" onClick={() => walkTo(walkTarget(item))}>
-              Walk to {item.id}
-            </button>
-          ))}
-          <button type="button" onClick={() => walkTo(HOME)}>
-            Walk home
-          </button>
-        </div>
-      )}
-    </>
+  return (
+    <section
+      className={styles.room}
+      aria-label={roomLabel}
+      onMouseLeave={goHome}
+      onBlur={handleBlur}
+      onClickCapture={debug ? handleDebugClick : undefined}
+      data-debug={debug || undefined}
+    >
+      <img className={styles.background} src={roomBackgrounds.day} alt="" draggable={false} />
+      {ITEMS_IN_TAB_ORDER.map((item) => (
+        <RoomItem
+          key={item.id}
+          item={item}
+          active={item.id === activeId}
+          posed={posedAtFloor?.id === item.id}
+          onActivate={() => activate(item)}
+        />
+      ))}
+      <PawPrints position={position} isWalking={isWalking} reducedMotion={reducedMotion} />
+      <Ollie
+        position={position}
+        isWalking={isWalking}
+        direction={direction}
+        still={lookingUpAtWall || (idleAtHome && idleLookup) ? 'lookup' : 'sit'}
+        stillHeight={lookingUpAtWall ? active.poseH : undefined}
+        hidden={posedAtFloor !== null}
+      />
+      {posedAtFloor && <OlliePose item={posedAtFloor} pose={posedAtFloor.pose!} />}
+      {bubble && <SpeechBubble anchor={bubble.anchor} text={bubble.text} />}
+      {debug && <DebugOverlay lastClick={lastClick} />}
+    </section>
   );
 }
 
