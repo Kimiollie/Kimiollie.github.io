@@ -1,0 +1,23 @@
+.plate,
+.slot {
+  fill: #ffffff;
+  stroke: #141416;
+}
+
+.plate {
+  stroke-width: 2.5;
+}
+
+.slot {
+  stroke-width: 2;
+}
+
+.lever {
+  fill: #141416;
+  transition: transform 0.22s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+/* Lights off (night): the lever flips down. */
+.switch[data-on='false'] .lever {
+  transform: translateY(10px);
+}

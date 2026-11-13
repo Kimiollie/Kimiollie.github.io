@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { BRAND, CV_URL, cvButtonLabel } from '../content/site.ts';
+import ThemeToggle from './ThemeToggle.tsx';
 import styles from './Header.module.css';
 
 const NAV_LINKS = [
@@ -58,6 +59,8 @@ function Header() {
             ))}
           </ul>
         </nav>
+
+        <ThemeToggle />
 
         <a href={CV_URL} download className={styles.cv}>
           {cvButtonLabel}

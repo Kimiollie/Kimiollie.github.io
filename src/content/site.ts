@@ -9,6 +9,12 @@ export const REPO_URL = 'https://github.com/Kimiollie/Kimiollie.github.io';
 
 export const cvButtonLabel = 'Fetch CV';
 
+/** Header day/night button (screen-reader label and tooltip). */
+export const themeToggleLabels = {
+  toNight: 'Switch to night',
+  toDay: 'Switch to day',
+};
+
 export const backToRoom = 'Back to the room';
 
 export const footerText = 'Illustrations of Ollie, the real boss of this house. Built by Kim.';

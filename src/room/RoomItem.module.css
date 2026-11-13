@@ -32,6 +32,18 @@
   opacity: 1;
 }
 
+/* Night: white items are dimmed until hovered; the coloured versions stay bright. */
+[data-theme='night'] .white,
+[data-theme='night'] .item[data-item='switch'] svg {
+  filter: brightness(0.78);
+  transition: filter 0.6s ease;
+}
+
+[data-theme='night'] .item[data-active] .white,
+[data-theme='night'] .item[data-active][data-item='switch'] svg {
+  filter: none;
+}
+
 /* Ollie's pose replaces the item while he is there. */
 .item[data-posed] .white,
 .item[data-posed] .colour {

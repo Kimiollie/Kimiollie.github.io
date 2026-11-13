@@ -125,7 +125,12 @@
 }
 
 @media (max-width: 379.98px) {
+  .inner {
+    gap: 8px;
+  }
+
   .brand {
+    gap: 7px;
     font-size: 1rem;
   }
 

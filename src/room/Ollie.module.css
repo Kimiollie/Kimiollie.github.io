@@ -9,6 +9,11 @@
   user-select: none;
 }
 
+/* Night: a faint light outline so Ollie stays visible in the dark room. */
+[data-theme='night'] .sprite {
+  filter: drop-shadow(0 0 1.5px rgb(255 255 255 / 85%));
+}
+
 /* Soft contact shadow, like the items. */
 .shadow {
   position: absolute;

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import type { FocusEvent, MouseEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { lightSwitchLines, ollieLines, roomLabel } from '../content/site.ts';
+import type { Theme } from '../theme/dayNight.ts';
+import { useTheme } from '../theme/themeContext.ts';
 import DebugOverlay from './DebugOverlay.tsx';
 import Ollie, { ollieTop } from './Ollie.tsx';
 import OlliePose from './OlliePose.tsx';
@@ -27,9 +29,9 @@ import styles from './Room.module.css';
 
 const near = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y) < 0.5;
 
-function lineFor(item: RoomItemConfig): string {
-  // Step 3.5 makes the switch line follow the theme; by day the switch turns the lights off.
-  return item.id === 'switch' ? lightSwitchLines.off : ollieLines[item.id];
+function lineFor(item: RoomItemConfig, theme: Theme): string {
+  if (item.id === 'switch') return theme === 'day' ? lightSwitchLines.on : lightSwitchLines.off;
+  return ollieLines[item.id];
 }
 
 /** Top-centre of the item's pose, for the speech bubble. */
@@ -46,6 +48,7 @@ function Room() {
   const [activeId, setActiveId] = useState<RoomItemKey | null>(null);
   const [idleLookup, setIdleLookup] = useState(false);
   const { position, isWalking, direction, walkTo, reducedMotion } = useWalker(HOME);
+  const { theme, toggleTheme } = useTheme();
 
   const active = ROOM_ITEMS.find((item) => item.id === activeId) ?? null;
   const arrived = active !== null && !isWalking && near(position, walkTarget(active));
@@ -100,11 +103,11 @@ function Room() {
 
   let bubble: { anchor: Point; text: string } | null = null;
   if (posedAtFloor) {
-    bubble = { anchor: poseTop(posedAtFloor), text: lineFor(posedAtFloor) };
+    bubble = { anchor: poseTop(posedAtFloor), text: lineFor(posedAtFloor, theme) };
   } else if (lookingUpAtWall) {
     bubble = {
       anchor: ollieTop(position, active.poseH ?? 135),
-      text: lineFor(active),
+      text: lineFor(active, theme),
     };
   }
 
@@ -118,6 +121,12 @@ function Room() {
       data-debug={debug || undefined}
     >
       <img className={styles.background} src={roomBackgrounds.day} alt="" draggable={false} />
+      <img
+        className={`${styles.background} ${styles.night}`}
+        src={roomBackgrounds.night}
+        alt=""
+        draggable={false}
+      />
       {ITEMS_IN_TAB_ORDER.map((item) => (
         <RoomItem
           key={item.id}
@@ -125,6 +134,8 @@ function Room() {
           active={item.id === activeId}
           posed={posedAtFloor?.id === item.id}
           onActivate={() => activate(item)}
+          lightsOn={theme === 'day'}
+          onToggleTheme={toggleTheme}
         />
       ))}
       <PawPrints position={position} isWalking={isWalking} reducedMotion={reducedMotion} />

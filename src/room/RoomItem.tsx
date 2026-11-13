@@ -12,11 +12,20 @@ interface RoomItemProps {
   /** Ollie's pose is shown here, so the item's own image is hidden. */
   posed: boolean;
   onActivate: () => void;
-  /** Called when the light switch is used (theme toggling comes in step 3.5). */
+  /** Light switch: lights on (day) or off (night). */
+  lightsOn?: boolean;
+  /** Called when the light switch is used. */
   onToggleTheme?: () => void;
 }
 
-function RoomItem({ item, active, posed, onActivate, onToggleTheme }: RoomItemProps) {
+function RoomItem({
+  item,
+  active,
+  posed,
+  lightsOn = true,
+  onActivate,
+  onToggleTheme,
+}: RoomItemProps) {
   const style = {
     ...boxToPercent(itemBox(item)),
     zIndex: Math.round(item.y),
@@ -56,7 +65,7 @@ function RoomItem({ item, active, posed, onActivate, onToggleTheme }: RoomItemPr
           draggable={false}
         />
       )}
-      {item.id === 'switch' && <LightSwitch />}
+      {item.id === 'switch' && <LightSwitch on={lightsOn} />}
       <span className={`${styles.label} fun`} aria-hidden="true">
         {item.label}
       </span>
@@ -89,7 +98,7 @@ function RoomItem({ item, active, posed, onActivate, onToggleTheme }: RoomItemPr
       );
     case 'toggleTheme':
       return (
-        <button type="button" onClick={onToggleTheme} {...common}>
+        <button type="button" onClick={onToggleTheme} aria-pressed={lightsOn} {...common}>
           {content}
         </button>
       );

@@ -71,6 +71,11 @@
   border-radius: 14px;
 }
 
+/* Night: a faint light outline keeps the dark outlines visible. */
+[data-theme='night'] .friendHead img {
+  filter: drop-shadow(0 0 1.5px rgb(255 255 255 / 85%));
+}
+
 .friendName {
   margin: 0 0 2px;
   font-size: 1.2rem;
