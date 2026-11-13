@@ -10,6 +10,8 @@ import OlliePose from './OlliePose.tsx';
 import PawPrints from './PawPrints.tsx';
 import RoomItem from './RoomItem.tsx';
 import SpeechBubble from './SpeechBubble.tsx';
+import VisitingFriend from './VisitingFriend.tsx';
+import { pickVisitor, type Random } from './visitor.ts';
 import {
   HOME,
   IDLE,
@@ -41,8 +43,15 @@ function poseTop(item: RoomItemConfig): Point {
   return { x: box.left + box.width / 2, y: box.top };
 }
 
-function Room() {
+interface RoomProps {
+  /** Dice for the visiting friend. Injectable for tests; defaults to Math.random. */
+  random?: Random;
+}
+
+function Room({ random = Math.random }: RoomProps) {
   const [searchParams] = useSearchParams();
+  // Decided once per mount (= once per home visit), never on re-render.
+  const [visitor] = useState(() => pickVisitor(random));
   const debug = searchParams.has('debug');
   const [lastClick, setLastClick] = useState<Point | null>(null);
   const [activeId, setActiveId] = useState<RoomItemKey | null>(null);
@@ -138,6 +147,7 @@ function Room() {
           onToggleTheme={toggleTheme}
         />
       ))}
+      {visitor && <VisitingFriend friend={visitor} />}
       <PawPrints position={position} isWalking={isWalking} reducedMotion={reducedMotion} />
       <Ollie
         position={position}

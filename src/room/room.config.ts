@@ -1,5 +1,5 @@
 import { CV_URL, roomLabels, roomPortraitAlt } from '../content/site.ts';
-import type { RoomItemId } from '../content/types.ts';
+import type { FriendId, RoomItemId } from '../content/types.ts';
 
 /** The room image is 1376 × 768. All positions below are in these image pixels. */
 export const ROOM_W = 1376;
@@ -174,6 +174,18 @@ export const WALK = {
   maxDip: 70,
   /** Each walk frame is shown this long (ms). */
   frameMs: 150,
+};
+
+/**
+ * Visiting friend easter egg: 1-in-2 chance per home visit (PLAN.md 4.3 said 1 in 3).
+ * The spot is on the floor in front of the door: clear of the mailbox (and its pose), the ball,
+ * the water bowl, Ollie at the light switch, and all of Ollie's walking paths.
+ */
+export const FRIEND_VISIT = {
+  chance: 1 / 2,
+  spot: { x: 1185, y: 640 } satisfies Point,
+  /** Sitting heights in image px before the depth scale: the same as Ollie sitting (135). */
+  height: { kiwi: 135, moon: 135, tho: 135 } satisfies Record<FriendId, number>,
 };
 
 /** Idle at home: every 5 s, a 50% chance of looking up for 1.5 s (PLAN.md 4.3). */

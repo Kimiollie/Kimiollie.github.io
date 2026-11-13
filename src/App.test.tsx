@@ -28,10 +28,16 @@ describe('routes', () => {
     ['/about', 'About me'],
     ['/beyond', 'Beyond code'],
     ['/contact', 'Say hi'],
-    ['/no-such-page', 'Page not found'],
   ])('%s renders its H1', (path, title) => {
     renderAt(path);
     expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(title);
+  });
+
+  it('renders the 404 page for unknown paths', () => {
+    renderAt('/no-such-page');
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toMatch(
+      /^Oops, (Kiwi|Moon|Tho) buried this page\.$/,
+    );
   });
 });
 

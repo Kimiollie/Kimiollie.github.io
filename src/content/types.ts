@@ -91,8 +91,10 @@ export interface GalleryImage {
   alt: string;
 }
 
+export type FriendId = 'kiwi' | 'moon' | 'tho';
+
 export interface Friend {
-  id: 'kiwi' | 'moon' | 'tho';
+  id: FriendId;
   name: string;
   breed: string;
   line: string;

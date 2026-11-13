@@ -9,6 +9,10 @@ import mailboxColour from '../assets/items/mailbox_c.webp';
 import ball from '../assets/items/ball.webp';
 import ballColour from '../assets/items/ball_c.webp';
 import portraitWall from '../assets/items/portrait_wall.webp';
+import kiwiSit from '../assets/friends/kiwi_sit.webp';
+import moonSit from '../assets/friends/moon_sit.webp';
+import thoSit from '../assets/friends/tho_sit.webp';
+import type { FriendId } from '../content/types.ts';
 import type { ItemImage, ItemPose } from './room.config.ts';
 
 export const roomBackgrounds = { day: roomDay, night: roomNight };
@@ -44,6 +48,13 @@ function sprite(name: string, width: number, height: number, pad = 8): ItemArt {
   const url = ollieUrls[`../assets/ollie/${name}.webp`];
   return { white: url, colour: url, width, height, pad };
 }
+
+/** Ollie's friends, sitting (used by the room visitor and the 404 page). */
+export const friendSprites: Record<FriendId, ItemArt> = {
+  kiwi: { white: kiwiSit, colour: kiwiSit, width: 322, height: 515, pad: 10 },
+  moon: { white: moonSit, colour: moonSit, width: 291, height: 528, pad: 10 },
+  tho: { white: thoSit, colour: thoSit, width: 302, height: 522, pad: 10 },
+};
 
 /** Pictures shown inside wall items. */
 export const wallPictures = { portraitWall };

@@ -40,6 +40,12 @@ export const ollie = {
 
 export const friendsTitle = "Ollie's squad";
 
+/** Name bubble when a friend is visiting the room (PLAN.md 4.3). */
+export const visitorLine = (name: string) => `${name} is visiting!`;
+
+/** 404 page title (PLAN.md 4.3). */
+export const notFoundTitle = (name: string) => `Oops, ${name} buried this page.`;
+
 export const friends: Friend[] = [
   {
     id: 'kiwi',

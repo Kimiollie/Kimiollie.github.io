@@ -1,0 +1,27 @@
+.friend {
+  position: absolute;
+}
+
+.sprite {
+  position: absolute;
+  max-width: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Night: the same faint light outline as Ollie. */
+[data-theme='night'] .sprite {
+  filter: drop-shadow(0 0 1.5px rgb(255 255 255 / 85%));
+}
+
+.shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 82%;
+  aspect-ratio: 5 / 1;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 12%);
+  transform: translate(-50%, 50%);
+  pointer-events: none;
+}
