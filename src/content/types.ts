@@ -101,5 +101,5 @@ export interface ContactLink {
   /** Text shown for the link, e.g. the email address. */
   text: string;
   href: string;
-  kind: 'email' | 'external' | 'download';
+  kind: 'email' | 'external';
 }
