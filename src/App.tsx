@@ -1,5 +1,9 @@
 function App() {
-  return <h1>Hello from Ollie's House</h1>;
+  return (
+    <main className="wrap">
+      <h1>Hello from Ollie's House</h1>
+    </main>
+  );
 }
 
 export default App;
