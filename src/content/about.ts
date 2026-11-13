@@ -3,6 +3,8 @@ import type { Badge, CertificateChip, Fact, SkillGroup, TimelineEntry } from './
 export const aboutPage = {
   title: 'About me',
   sub: 'From hotel breakfasts to Kotlin Multiplatform, with Ollie supervising.',
+  /** From PLAN.md section 2.3: "Portrait illustration (Kim hugging Ollie)". */
+  portraitAlt: 'Portrait illustration of Kim hugging Ollie',
   storyTitle: 'My story',
   skillsTitle: 'Skills',
   timelineTitle: 'Timeline',

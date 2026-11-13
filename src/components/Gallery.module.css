@@ -1,0 +1,26 @@
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tile {
+  overflow: hidden;
+  aspect-ratio: 1;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+}
+
+@media (max-width: 479.98px) {
+  .gallery {
+    gap: 10px;
+  }
+
+  .tile {
+    border-radius: 12px;
+  }
+}

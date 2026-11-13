@@ -1,0 +1,246 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  align-items: start;
+  gap: 48px;
+}
+
+.left,
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.sectionTitle {
+  font-size: 1.4rem;
+}
+
+/* Portrait */
+/* The portrait has its own drawn frame, so show it whole inside the card. */
+.portraitCard {
+  padding: 14px;
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+}
+
+.portrait {
+  aspect-ratio: 682 / 877;
+  border-radius: 6px;
+}
+
+/* Timeline */
+.timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.entry {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 20px 28px;
+}
+
+.entry::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  background: var(--card);
+}
+
+.entry::after {
+  content: '';
+  position: absolute;
+  top: 22px;
+  bottom: 0;
+  left: 6px;
+  width: 2px;
+  background: var(--line);
+}
+
+.entry:last-child {
+  padding-bottom: 0;
+}
+
+.entry:last-child::after {
+  display: none;
+}
+
+.entry[data-current='true']::before {
+  background: var(--c-about);
+}
+
+.entryRole {
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.entryPlace,
+.entryPeriod {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+/* Facts */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 18px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+}
+
+.factValue {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.factLabel {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* Skills */
+.skills {
+  margin: 0;
+}
+
+.skillRow {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 4px 20px;
+  padding-block: 10px;
+  border-top: 1.5px solid var(--soft);
+}
+
+.skillRow:first-child {
+  border-top: 0;
+}
+
+.skillRow dt {
+  font-weight: 600;
+}
+
+.skillRow dd {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Badges */
+.badges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.badgeLink {
+  flex: none;
+  display: block;
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+}
+
+.badgeImage {
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+a.badgeLink:hover {
+  outline: 3px solid var(--c-about);
+  outline-offset: 2px;
+}
+
+.badgeText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.badgeName {
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.badgeMeta {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 4px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--soft);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.seeAll {
+  font-weight: 600;
+}
+
+.seeAll:hover {
+  color: var(--c-about);
+}
+
+@media (max-width: 819.98px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+  }
+
+  .portraitCard {
+    max-width: 340px;
+  }
+}
+
+@media (max-width: 599.98px) {
+  .facts,
+  .badges {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .skillRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
