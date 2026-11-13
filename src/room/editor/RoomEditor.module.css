@@ -1,0 +1,196 @@
+.editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 290px;
+  align-items: start;
+  gap: 20px;
+}
+
+.room {
+  cursor: default;
+  touch-action: none;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  stroke: rgb(255 0 80 / 14%);
+  stroke-width: 1;
+}
+
+.draggable {
+  position: absolute;
+  cursor: grab;
+  user-select: none;
+}
+
+.draggable:active {
+  cursor: grabbing;
+}
+
+.draggable:focus-visible,
+.draggable[data-selected] {
+  outline: 2px dashed rgb(0 90 255);
+  outline-offset: 2px;
+}
+
+.draggable[data-selected] {
+  outline-style: solid;
+}
+
+.sprite {
+  position: absolute;
+  max-width: none;
+  pointer-events: none;
+}
+
+.picture {
+  position: absolute;
+  object-fit: cover;
+  object-position: center 30%;
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+.shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 82%;
+  aspect-ratio: 5 / 1;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 12%);
+  transform: translate(-50%, 50%);
+  pointer-events: none;
+}
+
+.wall {
+  border-radius: 4px;
+  background: rgb(0 120 255 / 6%);
+}
+
+.ghost {
+  position: absolute;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* Night looks like the live room: dimmed items, light outline on the dogs. */
+[data-theme='night'] .wall .sprite,
+[data-theme='night'] .wall svg {
+  filter: brightness(0.78);
+}
+
+[data-theme='night'] .floor .sprite {
+  filter: drop-shadow(0 0 1.5px rgb(255 255 255 / 85%));
+}
+
+.greetDot {
+  position: absolute;
+  z-index: 9000;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: rgb(0 160 80);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.selectionLabel {
+  position: absolute;
+  z-index: 10000;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgb(0 90 255);
+  color: #ffffff;
+  font:
+    600 12px ui-monospace,
+    monospace;
+  white-space: nowrap;
+  transform: translateY(calc(-100% - 6px));
+  pointer-events: none;
+}
+
+.panel {
+  padding: 14px;
+  border: 2px dashed rgb(0 90 255);
+  border-radius: 12px;
+  background: var(--card);
+  font-size: 0.85rem;
+}
+
+.panelTitle {
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+.help {
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font:
+    12px ui-monospace,
+    monospace;
+}
+
+.table th,
+.table td {
+  padding: 3px 4px;
+  border-bottom: 1px solid var(--soft);
+  text-align: left;
+}
+
+.table tr[data-changed] td {
+  font-weight: 700;
+}
+
+.table tr[data-changed] td:first-child::after {
+  content: ' *';
+  color: rgb(0 90 255);
+}
+
+.table tr[data-selected] {
+  background: rgb(0 120 255 / 12%);
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.buttons button {
+  padding: 5px 10px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.status {
+  min-height: 1.2em;
+  margin: 6px 0;
+  color: var(--muted);
+}
+
+.snippet {
+  margin: 0;
+  padding: 8px;
+  overflow-x: auto;
+  border-radius: 8px;
+  background: var(--soft);
+  font-size: 11px;
+  white-space: pre;
+  user-select: all;
+}

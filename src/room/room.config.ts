@@ -277,6 +277,18 @@ export function poseBox(item: RoomItemConfig, aspect: number): Box {
 /** Items in keyboard order: left to right across the room. */
 export const ITEMS_IN_TAB_ORDER = [...ROOM_ITEMS].sort((a, b) => a.x - b.x);
 
+/** Screen position → image px inside the room's box (used by ?debug and the ?edit layout editor). */
+export function clientToImage(
+  rect: { left: number; top: number; width: number; height: number },
+  clientX: number,
+  clientY: number,
+): Point {
+  return {
+    x: Math.round(((clientX - rect.left) / rect.width) * ROOM_W),
+    y: Math.round(((clientY - rect.top) / rect.height) * ROOM_H),
+  };
+}
+
 /** The same box as CSS percentages of the room, so the room scales with the screen. */
 export function boxToPercent(box: Box) {
   return {

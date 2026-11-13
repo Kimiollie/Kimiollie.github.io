@@ -19,9 +19,8 @@ import {
   OLLIE_HEIGHT,
   greetSpot,
   ITEMS_IN_TAB_ORDER,
-  ROOM_H,
   ROOM_ITEMS,
-  ROOM_W,
+  clientToImage,
   type Point,
   type RoomItemConfig,
   type RoomItemKey,
@@ -115,10 +114,7 @@ function Room({ random = Math.random }: RoomProps) {
     event.preventDefault();
     event.stopPropagation();
     const rect = event.currentTarget.getBoundingClientRect();
-    const point = {
-      x: Math.round(((event.clientX - rect.left) / rect.width) * ROOM_W),
-      y: Math.round(((event.clientY - rect.top) / rect.height) * ROOM_H),
-    };
+    const point = clientToImage(rect, event.clientX, event.clientY);
     console.log(`[room] x ${point.x}, y ${point.y}`);
     setLastClick(point);
   };

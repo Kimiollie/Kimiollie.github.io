@@ -1,11 +1,16 @@
+import { Suspense, lazy } from 'react';
 import type { CSSProperties } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import ExternalAnchor from '../components/ExternalAnchor.tsx';
 import { hero, quickLinks, quickLinksTitle } from '../content/site.ts';
 import type { QuickLink } from '../content/types.ts';
 import Room from '../room/Room.tsx';
 import { useMediaQuery } from '../utils/useMediaQuery.ts';
 import styles from './Home.module.css';
+
+// Dev-only layout editor (/?edit). import.meta.env.DEV is false in production builds,
+// so this lazy import and the whole editor are left out of the bundle.
+const RoomEditor = import.meta.env.DEV ? lazy(() => import('../room/editor/RoomEditor.tsx')) : null;
 
 function QuickLinkItem({ link }: { link: QuickLink }) {
   const props = {
@@ -44,6 +49,8 @@ function QuickLinkItem({ link }: { link: QuickLink }) {
 
 function Home() {
   const isDesktop = useMediaQuery('(min-width: 820px)');
+  const [searchParams] = useSearchParams();
+  const editing = RoomEditor !== null && searchParams.has('edit');
 
   return (
     <>
@@ -61,7 +68,13 @@ function Home() {
       {/* The room is desktop only; mobile gets its own layout in step 3.6. */}
       {isDesktop && (
         <div className={styles.room}>
-          <Room />
+          {editing && RoomEditor ? (
+            <Suspense fallback={null}>
+              <RoomEditor />
+            </Suspense>
+          ) : (
+            <Room />
+          )}
         </div>
       )}
 

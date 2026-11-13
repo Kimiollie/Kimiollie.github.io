@@ -1,6 +1,6 @@
 import { friends } from '../content/beyond.ts';
 import type { Friend, FriendId } from '../content/types.ts';
-import { FRIEND_VISIT, depthScale, friendHeight, type Box } from './room.config.ts';
+import { FRIEND_VISIT, depthScale, friendHeight, type Box, type Point } from './room.config.ts';
 import { friendSprites } from './roomAssets.ts';
 
 /** A random number in [0, 1). Injectable so tests can control the dice. */
@@ -22,9 +22,9 @@ export function friendById(id: string | null): Friend | null {
 }
 
 /** Where the visiting friend sits, in image px (bottom-centre on the spot, depth-scaled). */
-export function visitorBox(id: FriendId): Box {
+export function visitorBox(id: FriendId, spot: Point = FRIEND_VISIT.spot): Box {
   const art = friendSprites[id];
-  const { x, y } = FRIEND_VISIT.spot;
+  const { x, y } = spot;
   const height = friendHeight(id) * depthScale(y);
   const width = (height * (art.width - 2 * art.pad)) / (art.height - 2 * art.pad);
   return { left: x - width / 2, top: y - height, width, height };
