@@ -42,6 +42,8 @@ export interface QuickLink {
   label: string;
   href: string;
   kind: 'route' | 'external' | 'download' | 'email';
+  /** Which item colour the link uses on hover. */
+  accent: RoomItemId;
 }
 
 export type RoomItemId = 'projects' | 'about' | 'beyond' | 'contact' | 'cv';

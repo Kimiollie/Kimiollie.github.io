@@ -7,6 +7,8 @@ export const LINKEDIN_URL = 'https://www.linkedin.com/in/kim-tran-do';
 export const GITHUB_URL = 'https://github.com/Kimiollie';
 export const REPO_URL = 'https://github.com/Kimiollie/Kimiollie.github.io';
 
+export const cvButtonLabel = 'Fetch CV';
+
 export const backToRoom = 'Back to the room';
 
 export const footerText = 'Illustrations of Ollie, the real boss of this house. Built by Kim.';
@@ -26,11 +28,11 @@ export const hero = {
 export const quickLinksTitle = 'In a hurry?';
 
 export const quickLinks: QuickLink[] = [
-  { label: 'Projects', href: '/projects', kind: 'route' },
-  { label: 'CV (PDF)', href: CV_URL, kind: 'download' },
-  { label: 'LinkedIn', href: LINKEDIN_URL, kind: 'external' },
-  { label: 'GitHub', href: GITHUB_URL, kind: 'external' },
-  { label: 'Email', href: `mailto:${EMAIL}`, kind: 'email' },
+  { label: 'Projects', href: '/projects', kind: 'route', accent: 'projects' },
+  { label: 'CV (PDF)', href: CV_URL, kind: 'download', accent: 'cv' },
+  { label: 'LinkedIn', href: LINKEDIN_URL, kind: 'external', accent: 'contact' },
+  { label: 'GitHub', href: GITHUB_URL, kind: 'external', accent: 'contact' },
+  { label: 'Email', href: `mailto:${EMAIL}`, kind: 'email', accent: 'contact' },
 ];
 
 /** Ollie's speech bubbles in the room (PLAN.md section 2.6). */
