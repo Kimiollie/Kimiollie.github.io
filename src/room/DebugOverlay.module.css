@@ -1,0 +1,74 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+.minor {
+  stroke: rgb(255 0 80 / 18%);
+  stroke-width: 1;
+}
+
+.major {
+  stroke: rgb(255 0 80 / 45%);
+  stroke-width: 1.5;
+}
+
+.text {
+  fill: rgb(200 0 60);
+  font:
+    600 11px system-ui,
+    sans-serif;
+}
+
+.box {
+  fill: rgb(0 120 255 / 8%);
+  stroke: rgb(0 90 255);
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+}
+
+.anchor {
+  fill: rgb(0 90 255);
+}
+
+.stand {
+  fill: none;
+  stroke: rgb(0 160 80);
+  stroke-width: 2.5;
+}
+
+.home {
+  fill: rgb(0 160 80);
+}
+
+.boxText {
+  fill: rgb(0 60 200);
+  font:
+    700 12px system-ui,
+    sans-serif;
+}
+
+.click {
+  fill: rgb(255 0 80);
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.readout {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10001;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgb(20 20 22 / 85%);
+  color: #ffffff;
+  font:
+    600 13px ui-monospace,
+    monospace;
+  pointer-events: none;
+}

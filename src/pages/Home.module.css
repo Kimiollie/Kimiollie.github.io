@@ -38,12 +38,8 @@
   font-style: italic;
 }
 
-.roomPlaceholder {
-  aspect-ratio: 1376 / 768;
+.room {
   margin-bottom: 32px;
-  border: 2px dashed var(--muted);
-  border-radius: 18px;
-  background: var(--soft);
 }
 
 .quick {
@@ -85,10 +81,9 @@
   color: #141416;
 }
 
-/* Desktop only: the room and its hint. Mobile gets its own layout in step 3.6. */
+/* Desktop only: the hint about the room. */
 @media (max-width: 819.98px) {
-  .hint,
-  .roomPlaceholder {
+  .hint {
     display: none;
   }
 }

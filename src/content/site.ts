@@ -35,6 +35,22 @@ export const quickLinks: QuickLink[] = [
   { label: 'Email', href: `mailto:${EMAIL}`, kind: 'email', accent: 'contact' },
 ];
 
+/** Name of the interactive room, for screen readers. */
+export const roomLabel = "Ollie's House";
+
+/** The small portrait in the picture frame on the room's back wall. */
+export const roomPortraitAlt = 'Portrait of Kim hugging Ollie';
+
+/** Label pills above the room items. */
+export const roomLabels: Record<RoomItemId | 'switch', string> = {
+  projects: 'Projects',
+  about: 'About',
+  beyond: 'Beyond code',
+  contact: 'Contact',
+  cv: 'CV (PDF)',
+  switch: 'Light switch',
+};
+
 /** Ollie's speech bubbles in the room (PLAN.md section 2.6). */
 export const ollieLines: Record<RoomItemId, string> = {
   projects: "Woof! Kim's projects live here.",

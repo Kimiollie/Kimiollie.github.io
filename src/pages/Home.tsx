@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import ExternalAnchor from '../components/ExternalAnchor.tsx';
 import { hero, quickLinks, quickLinksTitle } from '../content/site.ts';
 import type { QuickLink } from '../content/types.ts';
+import Room from '../room/Room.tsx';
+import { useMediaQuery } from '../utils/useMediaQuery.ts';
 import styles from './Home.module.css';
 
 function QuickLinkItem({ link }: { link: QuickLink }) {
@@ -41,6 +43,8 @@ function QuickLinkItem({ link }: { link: QuickLink }) {
 }
 
 function Home() {
+  const isDesktop = useMediaQuery('(min-width: 820px)');
+
   return (
     <>
       <section className={styles.hero}>
@@ -54,8 +58,12 @@ function Home() {
         <p className={styles.hint}>{hero.hint}</p>
       </section>
 
-      {/* The interactive room replaces this box in step 3.2. */}
-      <div className={styles.roomPlaceholder} aria-hidden="true" />
+      {/* The room is desktop only; mobile gets its own layout in step 3.6. */}
+      {isDesktop && (
+        <div className={styles.room}>
+          <Room />
+        </div>
+      )}
 
       <nav className={styles.quick} aria-labelledby="quick-links-title">
         <h2 id="quick-links-title" className={styles.quickTitle}>
