@@ -1,0 +1,136 @@
+.header {
+  position: relative;
+  z-index: 10;
+  background: var(--bg);
+  border-bottom: 2px solid var(--line);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 68px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  background: var(--c-beyond);
+}
+
+.nav {
+  margin-left: auto;
+}
+
+.menuButton {
+  display: none;
+}
+
+.links {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: block;
+  padding: 6px 12px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.link:hover {
+  border-color: var(--line);
+}
+
+.link[aria-current='page'] {
+  border-color: var(--line);
+  background: var(--soft);
+}
+
+.cv,
+.menuButton {
+  padding: 8px 16px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.cv {
+  background: var(--ink);
+  color: var(--bg);
+  text-decoration: none;
+}
+
+.cv:hover {
+  background: var(--c-cv);
+  color: #141416;
+}
+
+@media (max-width: 819.98px) {
+  .inner {
+    gap: 10px;
+  }
+
+  .menuButton {
+    display: block;
+    background: var(--card);
+    color: var(--ink);
+  }
+
+  .links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 20px;
+    left: 20px;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 8px;
+    padding: 8px;
+    border: 2px solid var(--line);
+    border-radius: 16px;
+    background: var(--card);
+  }
+
+  .links[data-open='true'] {
+    display: flex;
+  }
+
+  .link {
+    padding: 10px 14px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 379.98px) {
+  .brand {
+    font-size: 1rem;
+  }
+
+  .cv,
+  .menuButton {
+    padding: 7px 12px;
+  }
+}
