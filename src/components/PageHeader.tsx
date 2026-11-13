@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { backToRoom } from '../content/site.ts';
-import { olliePose } from '../utils/images.ts';
+import { ollieSprites, poseImages, type ItemArt } from '../room/roomAssets.ts';
 import styles from './PageHeader.module.css';
 
 interface PageHeaderProps {
@@ -9,15 +9,24 @@ interface PageHeaderProps {
   sub: string;
   /** Page colour for the square next to the title and the link hover, e.g. var(--c-about). */
   accent: string;
-  /** Ollie pose file name in src/assets/ollie/, shown on the right. Hidden under 600px. */
-  pose?: string;
+  /** Ollie's pose on the right (decorative). Hidden under 600px. */
+  pose?: HeaderPose;
 }
 
+type HeaderPose = 'laptop' | 'lookup' | 'easel' | 'phone';
+
+const HEADER_POSES: Record<HeaderPose, ItemArt> = {
+  laptop: poseImages.laptop,
+  lookup: ollieSprites.lookup,
+  easel: poseImages.easel,
+  phone: poseImages.phone,
+};
+
 function PageHeader({ title, sub, accent, pose }: PageHeaderProps) {
-  const poseSrc = pose ? olliePose(pose) : undefined;
+  const art = pose ? HEADER_POSES[pose] : undefined;
 
   return (
-    <header className={styles.head} style={{ '--accent': accent } as CSSProperties}>
+    <div className={styles.head} style={{ '--accent': accent } as CSSProperties}>
       <div className={styles.text}>
         <h1 className={styles.title}>
           <span className={styles.accent} aria-hidden="true" />
@@ -32,14 +41,14 @@ function PageHeader({ title, sub, accent, pose }: PageHeaderProps) {
 
       {pose && (
         <div className={styles.pose}>
-          {poseSrc ? (
-            <img src={poseSrc} alt="" />
+          {art ? (
+            <img src={art.white} alt="" width={art.width} height={art.height} />
           ) : (
             <div className={styles.posePlaceholder} aria-hidden="true" />
           )}
         </div>
       )}
-    </header>
+    </div>
   );
 }
 

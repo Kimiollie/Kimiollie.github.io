@@ -10,8 +10,11 @@
   cursor: inherit;
 }
 
+/* A clear keyboard focus ring in the line colour (black by day, cream at night). */
 .item:focus-visible {
-  outline: none;
+  outline: 3px solid var(--line);
+  outline-offset: 4px;
+  border-radius: 6px;
 }
 
 /* The inline style makes the image bigger than the box, so its transparent padding sits outside. */
@@ -49,11 +52,6 @@
 .item[data-posed] .colour {
   opacity: 0;
   transition: opacity 0.15s ease;
-}
-
-.floor:focus-visible .white,
-.floor:focus-visible .colour {
-  filter: drop-shadow(0 0 0 var(--line)) drop-shadow(0 0 3px var(--item-colour));
 }
 
 /* Soft contact shadow where the item touches the floor. */

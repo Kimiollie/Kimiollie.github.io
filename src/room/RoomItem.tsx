@@ -49,6 +49,8 @@ function RoomItem({
             style={imageStyle}
             src={images.white}
             alt=""
+            width={images.width}
+            height={images.height}
             draggable={false}
           />
           <img
@@ -56,6 +58,8 @@ function RoomItem({
             style={imageStyle}
             src={images.colour}
             alt=""
+            width={images.width}
+            height={images.height}
             draggable={false}
           />
         </>
@@ -66,6 +70,8 @@ function RoomItem({
           style={pictureToPercent(item, item.picture)}
           src={wallPictures[item.picture.image]}
           alt={item.picture.alt}
+          width={240}
+          height={317}
           draggable={false}
         />
       )}

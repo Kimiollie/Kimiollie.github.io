@@ -19,7 +19,9 @@ import {
   OLLIE_HEIGHT,
   greetSpot,
   ITEMS_IN_TAB_ORDER,
+  ROOM_H,
   ROOM_ITEMS,
+  ROOM_W,
   clientToImage,
   type Point,
   type RoomItemConfig,
@@ -140,11 +142,20 @@ function Room({ random = Math.random }: RoomProps) {
       onClickCapture={debug ? handleDebugClick : undefined}
       data-debug={debug || undefined}
     >
-      <img className={styles.background} src={roomBackgrounds.day} alt="" draggable={false} />
+      <img
+        className={styles.background}
+        src={roomBackgrounds.day}
+        alt=""
+        width={ROOM_W}
+        height={ROOM_H}
+        draggable={false}
+      />
       <img
         className={`${styles.background} ${styles.night}`}
         src={roomBackgrounds.night}
         alt=""
+        width={ROOM_W}
+        height={ROOM_H}
         draggable={false}
       />
       {ITEMS_IN_TAB_ORDER.map((item) => (

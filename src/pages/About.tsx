@@ -12,7 +12,7 @@ import {
   timeline,
 } from '../content/about.ts';
 import type { Badge } from '../content/types.ts';
-import { badgeImage, portraitImage } from '../utils/images.ts';
+import { PORTRAIT_SIZE, badgeImage, portraitImage } from '../utils/images.ts';
 import styles from './About.module.css';
 
 function BadgeItem({ badge }: { badge: Badge }) {
@@ -62,6 +62,7 @@ function About() {
               className={styles.portrait}
               lazy={false}
               fit="contain"
+              {...PORTRAIT_SIZE}
             />
           </div>
 

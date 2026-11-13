@@ -17,6 +17,9 @@ export const themeToggleLabels = {
   toDay: 'Switch to day',
 };
 
+/** First link on every page, for keyboard and screen-reader users. */
+export const skipLinkLabel = 'Skip to content';
+
 export const backToRoom = 'Back to the room';
 
 export const footerText = 'Illustrations of Ollie, the real boss of this house. Built by Kim.';

@@ -22,6 +22,15 @@
           theme = hour >= 7 && hour < 18 ? 'day' : 'night';
         }
         document.documentElement.dataset.theme = theme;
+
+        // Desktop home page: start downloading this time of day's room picture straight away.
+        if (location.pathname === '/' && matchMedia('(min-width: 820px)').matches) {
+          var link = document.createElement('link');
+          link.rel = 'preload';
+          link.as = 'image';
+          link.href = theme === 'day' ? '__ROOM_DAY_URL__' : '__ROOM_NIGHT_URL__';
+          document.head.appendChild(link);
+        }
       })();
     </script>
   </head>

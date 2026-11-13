@@ -84,8 +84,10 @@
   box-shadow: 0 0 0 3px var(--item-colour);
 }
 
+/* The item colour ring alone is too faint (yellow on cream), so add the line colour. */
 .card:focus-visible {
-  outline: none;
+  outline: 3px solid var(--line);
+  outline-offset: 3px;
 }
 
 .media {

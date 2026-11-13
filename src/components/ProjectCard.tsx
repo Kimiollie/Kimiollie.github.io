@@ -16,7 +16,8 @@ function ProjectCard({ project }: ProjectCardProps) {
     <article className={styles.card} aria-labelledby={titleId}>
       <div className={styles.media}>
         {image ? (
-          <img src={image} alt={project.imageAlt ?? ''} loading="lazy" />
+          // The frame is a fixed 16:8 box; width/height give the same ratio before the image loads.
+          <img src={image} alt={project.imageAlt ?? ''} loading="lazy" width={1200} height={600} />
         ) : (
           <div className={styles.placeholder} aria-hidden="true" />
         )}

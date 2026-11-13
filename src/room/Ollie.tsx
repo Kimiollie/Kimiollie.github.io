@@ -79,6 +79,8 @@ function Ollie({
         style={{ ...artInset(sprite), transform: flip ? 'scaleX(-1)' : undefined }}
         src={sprite.white}
         alt=""
+        width={sprite.width}
+        height={sprite.height}
         draggable={false}
       />
     </div>

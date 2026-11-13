@@ -17,9 +17,10 @@ import type { ItemImage, ItemPose } from './room.config.ts';
 
 export const roomBackgrounds = { day: roomDay, night: roomNight };
 
-// The old mailbox pose is no longer used (contact is a wall phone now), so it is left out.
+// Only the Ollie images the site shows. Unused files in src/assets/ollie/ (back, grin, lookback,
+// roll, sleep, mailbox) stay out of the build.
 const ollieUrls: Record<string, string> = import.meta.glob(
-  ['../assets/ollie/*.webp', '!../assets/ollie/mailbox*.webp'],
+  '../assets/ollie/{sit,lookup,walk_1,walk_2,walk_3,fetch,laptop,easel,phone,phone_c}.webp',
   { eager: true, import: 'default' },
 );
 
@@ -70,7 +71,10 @@ export const wallPictures = { portraitWall };
 export interface ItemArt {
   white: string;
   colour: string;
-  /** Natural image size in px. */
+  /**
+   * Image size in px of the original drawing. All maths uses ratios of these numbers, so a file can
+   * be resized (keeping its proportions) without changing them.
+   */
   width: number;
   height: number;
   /** Transparent padding around the drawing, in px, on every side. */

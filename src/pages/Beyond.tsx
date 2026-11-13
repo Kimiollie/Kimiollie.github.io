@@ -10,7 +10,7 @@ import {
   ollie,
   paintings,
 } from '../content/beyond.ts';
-import { friendHead } from '../utils/images.ts';
+import { FRIEND_HEAD_SIZE, friendHead } from '../utils/images.ts';
 import styles from './Beyond.module.css';
 
 function Beyond() {
@@ -67,6 +67,7 @@ function Beyond() {
                       src={friendHead(friend.id)}
                       alt={`${friend.name}, ${friend.breed}`}
                       fit="contain"
+                      {...FRIEND_HEAD_SIZE[friend.id]}
                     />
                   </div>
                   <h3 id={`friend-${friend.id}`} className={styles.friendName}>

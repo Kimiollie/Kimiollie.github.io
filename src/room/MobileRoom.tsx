@@ -18,14 +18,17 @@ interface Card {
   href: string;
   download: boolean;
   /** The coloured item image (About uses the small wall portrait). */
-  image: string;
+  image: { src: string; width: number; height: number };
   /** Ollie's pose shown for a moment after a tap. */
-  pose: string;
+  pose: { src: string; width: number; height: number };
 }
 
 function cardFor(id: RoomItemId): Card {
   const item = ROOM_ITEMS.find((i) => i.id === id)! as Card['item'];
-  const image = item.image ? itemImages[item.image].colour : wallPictures.portraitWall;
+  const art = item.image ? itemImages[item.image] : undefined;
+  const image = art
+    ? { src: art.colour, width: art.width, height: art.height }
+    : { src: wallPictures.portraitWall, width: 240, height: 317 };
   // Contact uses the plain phone pose here; the room uses its coloured version.
   const poseArt: ItemArt = item.pose ? poseImages[item.pose] : ollieSprites.lookup;
   const action = item.action;
@@ -34,7 +37,7 @@ function cardFor(id: RoomItemId): Card {
     href: action.type === 'route' ? action.to : action.type === 'download' ? action.href : '/',
     download: action.type === 'download',
     image,
-    pose: poseArt.white,
+    pose: { src: poseArt.white, width: poseArt.width, height: poseArt.height },
   };
 }
 
@@ -77,7 +80,13 @@ function MobileRoom() {
   return (
     <section className={styles.mobile} aria-label={roomLabel}>
       <div className={styles.intro}>
-        <img className={styles.ollie} src={ollieSprites.sit.white} alt="" />
+        <img
+          className={styles.ollie}
+          src={ollieSprites.sit.white}
+          alt=""
+          width={ollieSprites.sit.width}
+          height={ollieSprites.sit.height}
+        />
         <p className={`${styles.bubble} fun`}>{mobileOllieLine}</p>
       </div>
 
@@ -102,10 +111,21 @@ function MobileRoom() {
                 <span className={styles.media}>
                   <img
                     className={`${styles.image} ${id === 'about' ? styles.portrait : ''}`}
-                    src={card.image}
+                    src={card.image.src}
                     alt=""
+                    width={card.image.width}
+                    height={card.image.height}
+                    loading="lazy"
                   />
-                  <img className={styles.pose} src={card.pose} alt="" data-testid={`pose-${id}`} />
+                  <img
+                    className={styles.pose}
+                    src={card.pose.src}
+                    alt=""
+                    width={card.pose.width}
+                    height={card.pose.height}
+                    loading="lazy"
+                    data-testid={`pose-${id}`}
+                  />
                 </span>
                 <span className={styles.text}>
                   <span className={styles.name}>{card.item.label}</span>

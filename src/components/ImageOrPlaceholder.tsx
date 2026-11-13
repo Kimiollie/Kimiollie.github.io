@@ -8,6 +8,9 @@ interface ImageOrPlaceholderProps {
   lazy?: boolean;
   /** cover = fill the frame and crop; contain = show the whole image. */
   fit?: 'cover' | 'contain';
+  /** The image's size in px, when known (prevents layout jumps). */
+  width?: number;
+  height?: number;
 }
 
 /** Shows the image, or a dashed box of the same size while the file is missing. */
@@ -17,6 +20,8 @@ function ImageOrPlaceholder({
   className,
   lazy = true,
   fit = 'cover',
+  width,
+  height,
 }: ImageOrPlaceholderProps) {
   if (src) {
     return (
@@ -25,6 +30,8 @@ function ImageOrPlaceholder({
         alt={alt}
         className={`${styles.image} ${styles[fit]} ${className ?? ''}`}
         loading={lazy ? 'lazy' : undefined}
+        width={width}
+        height={height}
       />
     );
   }

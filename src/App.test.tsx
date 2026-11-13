@@ -28,14 +28,15 @@ describe('routes', () => {
     ['/about', 'About me'],
     ['/beyond', 'Beyond code'],
     ['/contact', 'Say hi'],
-  ])('%s renders its H1', (path, title) => {
+  ])('%s renders its H1', async (path, title) => {
     renderAt(path);
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(title);
+    // Pages other than Home are lazy-loaded, so wait for them.
+    expect((await screen.findByRole('heading', { level: 1 })).textContent).toBe(title);
   });
 
-  it('renders the 404 page for unknown paths', () => {
+  it('renders the 404 page for unknown paths', async () => {
     renderAt('/no-such-page');
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toMatch(
+    expect((await screen.findByRole('heading', { level: 1 })).textContent).toMatch(
       /^Oops, (Kiwi|Moon|Tho) buried this page\.$/,
     );
   });
@@ -55,7 +56,7 @@ describe('header', () => {
     expect(cv.hasAttribute('download')).toBe(true);
   });
 
-  it('opens the menu and closes it on Escape and on route change', () => {
+  it('opens the menu and closes it on Escape and on route change', async () => {
     renderAt('/');
     const button = screen.getByRole('button', { name: 'Menu' });
     expect(button.getAttribute('aria-expanded')).toBe('false');
@@ -70,7 +71,9 @@ describe('header', () => {
     const mainNav = screen.getByRole('navigation', { name: 'Main' });
     fireEvent.click(within(mainNav).getByRole('link', { name: 'Projects' }));
     expect(button.getAttribute('aria-expanded')).toBe('false');
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Projects');
+    expect((await screen.findByRole('heading', { level: 1, name: 'Projects' })).textContent).toBe(
+      'Projects',
+    );
   });
 });
 
@@ -87,8 +90,9 @@ describe('CV links', () => {
     }
   });
 
-  it('has no CV link on the Contact page outside the header', () => {
+  it('has no CV link on the Contact page outside the header', async () => {
     renderAt('/contact');
+    await screen.findByRole('heading', { level: 1, name: 'Say hi' });
     const main = document.querySelector('main')!;
     expect(main.querySelector('a[href="/Kim_Ngan_Tran_CV.pdf"]')).toBeNull();
   });

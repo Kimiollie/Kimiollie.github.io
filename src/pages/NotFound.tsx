@@ -20,6 +20,8 @@ function NotFound({ random = Math.random }: NotFoundProps) {
         className={styles.friend}
         src={friendSprites[friend.id].white}
         alt={`${friend.name}, ${friend.breed}`}
+        width={friendSprites[friend.id].width}
+        height={friendSprites[friend.id].height}
       />
       <h1 className={styles.title}>{notFoundTitle(friend.name)}</h1>
       <Link to="/" className={styles.back}>

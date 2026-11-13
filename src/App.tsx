@@ -1,12 +1,15 @@
+import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout.tsx';
 import Home from './pages/Home.tsx';
-import Projects from './pages/Projects.tsx';
-import About from './pages/About.tsx';
-import Beyond from './pages/Beyond.tsx';
-import Contact from './pages/Contact.tsx';
-import NotFound from './pages/NotFound.tsx';
 import ThemeProvider from './theme/ThemeProvider.tsx';
+
+// Home (with the room) loads straight away; the other pages load when visited.
+const Projects = lazy(() => import('./pages/Projects.tsx'));
+const About = lazy(() => import('./pages/About.tsx'));
+const Beyond = lazy(() => import('./pages/Beyond.tsx'));
+const Contact = lazy(() => import('./pages/Contact.tsx'));
+const NotFound = lazy(() => import('./pages/NotFound.tsx'));
 
 function App() {
   return (

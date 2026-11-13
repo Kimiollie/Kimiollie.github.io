@@ -9,12 +9,6 @@ const projectImages: ImageMap = import.meta.glob('../assets/projects/*.{png,jpg,
   import: 'default',
 });
 
-// The old mailbox pose is no longer used (contact is a wall phone now).
-const ollieImages: ImageMap = import.meta.glob(
-  ['../assets/ollie/*.{png,webp}', '!../assets/ollie/mailbox*'],
-  { eager: true, import: 'default' },
-);
-
 const portraitImages: ImageMap = import.meta.glob('../assets/portrait.webp', {
   eager: true,
   import: 'default',
@@ -30,17 +24,13 @@ const galleryImages: ImageMap = import.meta.glob('../assets/gallery/*.{png,jpg,j
   import: 'default',
 });
 
-const friendImages: ImageMap = import.meta.glob('../assets/friends/*.{png,webp}', {
+const friendImages: ImageMap = import.meta.glob('../assets/friends/*_head.{png,webp}', {
   eager: true,
   import: 'default',
 });
 
 export function projectImage(file: string | undefined): string | undefined {
   return file ? projectImages[`../assets/projects/${file}`] : undefined;
-}
-
-export function olliePose(name: string): string | undefined {
-  return ollieImages[`../assets/ollie/${name}.webp`] ?? ollieImages[`../assets/ollie/${name}.png`];
 }
 
 export function portraitImage(): string | undefined {
@@ -62,3 +52,11 @@ export function friendHead(id: string): string | undefined {
     friendImages[`../assets/friends/${id}_head.png`]
   );
 }
+
+/** Known image sizes (px), for width/height attributes so the page doesn't jump while loading. */
+export const PORTRAIT_SIZE = { width: 682, height: 877 };
+export const FRIEND_HEAD_SIZE: Record<string, { width: number; height: number }> = {
+  kiwi: { width: 232, height: 300 },
+  moon: { width: 252, height: 300 },
+  tho: { width: 240, height: 300 },
+};

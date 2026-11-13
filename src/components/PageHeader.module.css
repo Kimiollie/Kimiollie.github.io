@@ -34,8 +34,10 @@
   font-weight: 600;
 }
 
+/* The accent colours are too light for text by day, so the accent goes on the underline. */
 .back:hover {
-  color: var(--accent);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
 }
 
 .pose {

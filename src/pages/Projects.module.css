@@ -40,7 +40,8 @@
 }
 
 .moreLink:hover {
-  color: var(--c-projects);
+  text-decoration-color: var(--c-projects);
+  text-decoration-thickness: 3px;
 }
 
 @media (max-width: 819.98px) {

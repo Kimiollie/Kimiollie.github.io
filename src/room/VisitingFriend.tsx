@@ -33,6 +33,8 @@ function VisitingFriend({ friend, onHover, onLeave }: VisitingFriendProps) {
           style={artInset(art)}
           src={art.white}
           alt=""
+          width={art.width}
+          height={art.height}
           draggable={false}
         />
       </div>

@@ -27,6 +27,8 @@ function OlliePose({ item, pose }: { item: RoomItemConfig; pose: ItemPose }) {
         style={artInset(art)}
         src={art.colour}
         alt=""
+        width={art.width}
+        height={art.height}
         draggable={false}
       />
     </div>

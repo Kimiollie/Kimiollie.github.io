@@ -220,7 +220,8 @@ a.badgeLink:hover {
 }
 
 .seeAll:hover {
-  color: var(--c-about);
+  text-decoration-color: var(--c-about);
+  text-decoration-thickness: 3px;
 }
 
 @media (max-width: 819.98px) {
