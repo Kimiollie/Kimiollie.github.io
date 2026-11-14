@@ -39,7 +39,7 @@ export const hero = {
   tagline: {
     before: 'A ',
     highlight: 'tech-curious',
-    after: ' weirdo who likes logic puzzles.',
+    after: " builder who can't resist a good logic puzzle (and a good dog).",
   },
   sub: 'Software engineering, AI and a hospitality background',
   /** Desktop only. */
