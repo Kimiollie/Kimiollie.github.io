@@ -118,8 +118,6 @@ export const badges: Badge[] = [
     name: 'Ethical Hacker',
     issuer: 'Cisco Networking Academy',
     date: 'Oct 2025',
-    // TODO(needsReview): Kim to copy the Credly share URL for the verify link.
-    needsReview: true,
     image: 'cisco.webp',
   },
   {
@@ -143,7 +141,5 @@ export const certificateChips: CertificateChip[] = [
   { name: 'Hygiene passport' },
   {
     name: 'Travel Industry Safety Passport',
-    // TODO(needsReview): Kim to confirm the exact name and year.
-    needsReview: true,
   },
 ];

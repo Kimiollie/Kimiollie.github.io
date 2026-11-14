@@ -47,6 +47,8 @@ VITE_FORMSPREE_ID=your-form-id
 
 On every push to `main`, a GitHub Actions workflow runs lint, tests and the build, then publishes `dist/` to GitHub Pages. A copy of `index.html` is served as `404.html`, so deep links such as `/projects` work.
 
+The workflow is `.github/workflows/deploy.yml`. The contact form's Formspree ID comes from the repository variable `VITE_FORMSPREE_ID` (Settings → Secrets and variables → Actions → Variables).
+
 ## Project structure
 
 ```
