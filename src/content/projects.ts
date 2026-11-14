@@ -12,6 +12,8 @@ export const projectsPage = {
 export const projects: Project[] = [
   {
     id: 'carbon-footprint',
+    image: 'carbon-footprint.webp',
+    imageAlt: 'Welcome screen of the carbon footprint app, with a footprint and CO2 icon',
     title: 'Carbon footprint app (iOS)',
     status: 'In progress',
     meta: [
@@ -33,6 +35,9 @@ export const projects: Project[] = [
   },
   {
     id: 'ollies-house',
+    image: 'ollies-house.webp',
+    imageAlt:
+      "The illustrated room on the Ollie's House home page, with Ollie in his dog bed and a friend visiting by the door",
     title: "Ollie's House (this website)",
     status: 'This site',
     meta: ['Personal project', '2026'],
@@ -48,6 +53,9 @@ export const projects: Project[] = [
   },
   {
     id: 'mushroomhunter',
+    image: 'mushroomhunter.webp',
+    imageAlt:
+      'Four screens of the MushroomHunter app: home with weather, nearby mushrooms map, identification result and collection',
     title: 'MushroomHunter',
     meta: ['Android app', 'School team project', 'Grade 5/5'],
     bulletsLabel: 'What I did',
@@ -61,6 +69,9 @@ export const projects: Project[] = [
   },
   {
     id: 'metrade',
+    image: 'metrade.webp',
+    imageAlt:
+      'Metrade home page with a search bar, a Sell now button and the headline "Trade smarter, together"',
     title: 'Metrade',
     status: 'Live',
     meta: ['Full-stack e-commerce', 'School team project', 'Grade 5/5'],
@@ -76,6 +87,9 @@ export const projects: Project[] = [
   },
   {
     id: 'scada',
+    image: 'scada.webp',
+    imageAlt:
+      'Single-line diagram view of the SCADA monitoring interface showing feeder bays and breaker states',
     title: 'Industrial SCADA monitoring',
     meta: ['University client project for SaveLAN Oy', 'Jan – May 2026', 'Grade 5/5'],
     bulletsLabel: 'What I did',
@@ -91,6 +105,8 @@ export const projects: Project[] = [
   },
   {
     id: 'weather-rater',
+    image: 'weather-rater.webp',
+    imageAlt: 'Weather Rater terminal output ranking Barcelona, Athens and Helsinki by beach score',
     title: 'Weather Rater',
     meta: ['Personal solo project', 'Python CLI', '2026'],
     bulletsLabel: 'What it does',
@@ -102,6 +118,9 @@ export const projects: Project[] = [
   },
   {
     id: 'data-pipeline',
+    image: 'data-pipeline.webp',
+    imageAlt:
+      'Architecture diagram of the data pipeline, with the CLI, orchestration and scheduler layers',
     title: 'data-pipeline',
     meta: ['Personal project', 'Python'],
     bulletsLabel: 'What I did',
@@ -113,6 +132,9 @@ export const projects: Project[] = [
   },
   {
     id: 'heart-rate-monitor',
+    image: 'heart-rate-monitor.webp',
+    imageAlt:
+      'Raspberry Pi Pico board with a small screen showing a measurement menu and a pink rotary knob',
     title: 'Heart Rate Monitor',
     meta: ['Solo IoT project', 'Grade 5/5'],
     bulletsLabel: 'What I did',
@@ -122,6 +144,9 @@ export const projects: Project[] = [
   },
   {
     id: 'superflash',
+    image: 'superflash.webp',
+    imageAlt:
+      'SuperFlash start page with the headline "Master Anything Faster with SuperFlash!" and a Login with Google button',
     title: 'SuperFlash',
     meta: ['JavaFX flashcard app', 'School team project', 'Grade 5/5'],
     bulletsLabel: 'What I did',
@@ -134,6 +159,9 @@ export const projects: Project[] = [
   },
   {
     id: 'hospital-simulator',
+    image: 'hospital-simulator.webp',
+    imageAlt:
+      'Hospital System Simulator showing arrival, register desk, queues, general and specialist rooms and the exit',
     title: 'Hospital System Simulator',
     meta: ['Patient flow simulation in Java', 'School team project', 'Grade 5/5'],
     bulletsLabel: 'What I did',

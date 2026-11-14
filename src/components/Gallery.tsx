@@ -7,13 +7,18 @@ interface GalleryProps {
   images: GalleryImage[];
 }
 
-/** Square tiles in 3 columns. Missing images show as dashed placeholders. */
+/** Square tiles in 3 columns (use square images). Missing images show as dashed placeholders. */
 function Gallery({ images }: GalleryProps) {
   return (
     <ul className={styles.gallery}>
       {images.map((item) => (
         <li key={item.image ?? item.alt} className={styles.tile}>
-          <ImageOrPlaceholder src={galleryImage(item.image)} alt={item.alt} />
+          <ImageOrPlaceholder
+            src={galleryImage(item.image)}
+            alt={item.alt}
+            width={item.width}
+            height={item.height}
+          />
         </li>
       ))}
     </ul>

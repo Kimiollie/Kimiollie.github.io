@@ -89,6 +89,9 @@ export interface GalleryImage {
   /** File name in src/assets/gallery/. */
   image?: string;
   alt: string;
+  /** The image's size in px, so a natural-shape gallery doesn't jump while loading. */
+  width?: number;
+  height?: number;
 }
 
 export type FriendId = 'kiwi' | 'moon' | 'tho';

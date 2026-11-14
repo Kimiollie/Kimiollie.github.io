@@ -8,11 +8,25 @@ export const beyondPage = {
 export const paintings = {
   title: 'Dog paintings',
   intro: 'I paint dogs sometimes. Ollie is a frequent (and unpaid) model.',
-  // Placeholders until Kim adds 3–6 photos to src/assets/gallery/.
   images: [
-    { alt: 'Dog painting 1' },
-    { alt: 'Dog painting 2' },
-    { alt: 'Dog painting 3' },
+    {
+      image: 'painting_1.webp',
+      width: 1100,
+      height: 1100,
+      alt: 'Acrylic painting of Ollie in profile against a pale blue background',
+    },
+    {
+      image: 'painting_2.webp',
+      width: 1100,
+      height: 1100,
+      alt: 'Painting of Ollie lying on his back on a blanket, looking up at the viewer',
+    },
+    {
+      image: 'painting_3.webp',
+      width: 1100,
+      height: 1100,
+      alt: 'Painting of Ollie on a leash, standing in a snowy road at sunset',
+    },
   ] satisfies GalleryImage[],
 };
 
@@ -30,11 +44,10 @@ export const hobbies: Hobby[] = [
 export const ollie = {
   title: 'Ollie',
   text: 'Black-and-white French bulldog, professional nap taker and the main model for every illustration on this site.',
-  // Placeholders until Kim adds 3 Ollie photos to src/assets/gallery/.
   images: [
-    { alt: 'Ollie photo 1' },
-    { alt: 'Ollie photo 2' },
-    { alt: 'Ollie photo 3' },
+    { image: 'ollie_1.webp', alt: 'Ollie on the sofa with a tennis ball in his mouth' },
+    { image: 'ollie_2.webp', alt: 'Ollie sitting on the sofa next to his friend Kiwi' },
+    { image: 'ollie_3.webp', alt: 'Ollie at the door with his friends Moon and Kiwi' },
   ] satisfies GalleryImage[],
 };
 

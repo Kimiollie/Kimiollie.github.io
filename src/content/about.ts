@@ -118,6 +118,7 @@ export const badges: Badge[] = [
     name: 'Ethical Hacker',
     issuer: 'Cisco Networking Academy',
     date: 'Oct 2025',
+    verifyUrl: 'https://www.credly.com/badges/01be041e-9181-4770-b3b4-319eaa629322',
     image: 'cisco.webp',
   },
   {
