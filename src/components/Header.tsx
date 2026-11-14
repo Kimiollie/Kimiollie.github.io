@@ -34,7 +34,13 @@ function Header() {
     <header className={styles.header}>
       <div className={`wrap ${styles.inner}`}>
         <Link to="/" className={styles.brand}>
-          <span className={styles.dot} aria-hidden="true" />
+          <svg className={styles.paw} viewBox="0 0 20 20" aria-hidden="true">
+            <ellipse cx="10" cy="13" rx="5" ry="4.2" />
+            <ellipse cx="4.2" cy="7.6" rx="1.9" ry="2.4" />
+            <ellipse cx="8" cy="4.6" rx="1.9" ry="2.4" />
+            <ellipse cx="12" cy="4.6" rx="1.9" ry="2.4" />
+            <ellipse cx="15.8" cy="7.6" rx="1.9" ry="2.4" />
+          </svg>
           {BRAND}
         </Link>
 

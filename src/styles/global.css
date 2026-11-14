@@ -74,7 +74,7 @@ a:hover {
   border-radius: 4px;
 }
 
-/* Fredoka is only for Ollie's speech bubbles and room labels */
+/* Fredoka: Ollie's speech bubbles, room labels and the header name */
 .fun {
   font-family: var(--font-fun);
   font-weight: 500;
