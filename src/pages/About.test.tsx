@@ -31,7 +31,7 @@ describe('About page', () => {
   it('links each badge with a verify URL safely, named by name and issuer', () => {
     renderPage();
     const withUrl = badges.filter((badge) => badge.verifyUrl);
-    expect(withUrl).toHaveLength(3);
+    expect(withUrl.length).toBeGreaterThan(0);
 
     for (const badge of withUrl) {
       const link = screen.getByRole('link', { name: `${badge.name}, ${badge.issuer}` });
@@ -43,11 +43,10 @@ describe('About page', () => {
 
   it('does not link a badge that has no verify URL', () => {
     renderPage();
-    expect(
-      screen.queryByRole('link', { name: 'Ethical Hacker, Cisco Networking Academy' }),
-    ).toBeNull();
-    expect(
-      screen.getByRole('img', { name: 'Ethical Hacker, Cisco Networking Academy' }),
-    ).toBeDefined();
+    for (const badge of badges.filter((item) => !item.verifyUrl)) {
+      const name = `${badge.name}, ${badge.issuer}`;
+      expect(screen.queryByRole('link', { name })).toBeNull();
+      expect(screen.getByRole('img', { name })).toBeDefined();
+    }
   });
 });

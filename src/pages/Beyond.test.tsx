@@ -31,9 +31,15 @@ describe('Beyond code page', () => {
     }
   });
 
-  it('gives every gallery placeholder an accessible name', () => {
+  it('gives every gallery image an accessible name', () => {
     renderPage();
-    expect(screen.getByRole('img', { name: 'Dog painting 1' })).toBeDefined();
-    expect(screen.getByRole('img', { name: 'Ollie photo 3' })).toBeDefined();
+    expect(
+      screen.getByRole('img', {
+        name: 'Acrylic painting of Ollie in profile against a pale blue background',
+      }),
+    ).toBeDefined();
+    expect(
+      screen.getByRole('img', { name: 'Ollie at the door with his friends Moon and Kiwi' }),
+    ).toBeDefined();
   });
 });
