@@ -23,9 +23,9 @@ describe('About page', () => {
     expect(timeline.querySelectorAll('li')).toHaveLength(6);
   });
 
-  it('renders 3 fact tiles', () => {
+  it('renders 2 fact tiles', () => {
     renderPage();
-    expect(screen.getAllByTestId('fact')).toHaveLength(3);
+    expect(screen.getAllByTestId('fact')).toHaveLength(2);
   });
 
   it('links each badge with a verify URL safely, named by name and issuer', () => {

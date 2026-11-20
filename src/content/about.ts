@@ -2,7 +2,7 @@ import type { Badge, CertificateChip, Fact, SkillGroup, TimelineEntry } from './
 
 export const aboutPage = {
   title: 'About me',
-  sub: 'From hotel breakfasts to Kotlin Multiplatform, with Ollie supervising.',
+  sub: 'I build mobile, web and IoT projects, with Ollie supervising.',
   /** From PLAN.md section 2.3: "Portrait illustration (Kim hugging Ollie)". */
   portraitAlt: 'Portrait illustration of Kim hugging Ollie',
   storyTitle: 'My story',
@@ -16,15 +16,14 @@ export const aboutPage = {
 };
 
 export const story: string[] = [
-  'I started out in hospitality. I studied Hospitality Management and worked in hotels and kitchens, and I noticed that the part I enjoyed most was solving problems and finding the logic in a busy shift.',
-  "During covid I took some IT courses out of curiosity, and that curiosity didn't go away. So I started a Bachelor's in Information Technology at Metropolia, majoring in software engineering.",
-  "Now I build mobile, web and IoT projects, and I'm working on an iOS app at Metropolia's Software Factory. My years of working with people help me understand what users need and what they're looking for.",
+  "I build mobile, web and IoT projects. Right now I'm working on the iOS version of a carbon footprint app at Metropolia's Software Factory, in a small agile team. I study software engineering at Metropolia.",
+  "I can't resist a good logic puzzle, and code is full of them. I like the moment a hard problem finally makes sense, and I enjoy testing things and finding where they break.",
+  'Before IT, I worked in hotels and kitchens. During covid I took some IT courses out of curiosity, and the curiosity stayed. Those years with customers still help me today: I always think about what users really need.',
 ];
 
 export const facts: Fact[] = [
   { value: '4.9 / 5', label: 'grade average' },
   { value: 'Now', label: 'available, full-time' },
-  { value: '3 languages', label: 'English, Vietnamese, Finnish' },
 ];
 
 /** Newest first. */
