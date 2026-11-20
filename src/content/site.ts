@@ -1,6 +1,9 @@
 import type { QuickLink, RoomItemId } from './types.ts';
 
 export const BRAND = 'Kim Ngan Tran';
+/** Shorter names for the header when the screen is narrow. */
+export const BRAND_SHORT = 'Kim Tran';
+export const BRAND_TINY = 'Kim';
 export const CV_URL = '/Kim_Ngan_Tran_CV.pdf';
 export const EMAIL = 'sylviakimtran@gmail.com';
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/kim-tran-do';

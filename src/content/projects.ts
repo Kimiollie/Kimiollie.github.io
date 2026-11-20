@@ -13,7 +13,7 @@ export const projects: Project[] = [
   {
     id: 'carbon-footprint',
     image: 'carbon-footprint.webp',
-    imageAlt: 'Welcome screen of the carbon footprint app, with a footprint and CO2 icon',
+    imageAlt: 'Six screens of the carbon footprint app: login, sign up, landing, overview, add a trip and live tracking',
     title: 'Carbon footprint app (iOS)',
     status: 'In progress',
     meta: [

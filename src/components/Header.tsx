@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { BRAND, CV_URL, cvButtonLabel, cvButtonShortLabel } from '../content/site.ts';
+import {
+  BRAND,
+  BRAND_SHORT,
+  BRAND_TINY,
+  CV_URL,
+  cvButtonLabel,
+  cvButtonShortLabel,
+} from '../content/site.ts';
 import ThemeToggle from './ThemeToggle.tsx';
 import styles from './Header.module.css';
 
@@ -33,7 +40,7 @@ function Header() {
   return (
     <header className={styles.header}>
       <div className={`wrap ${styles.inner}`}>
-        <Link to="/" className={styles.brand}>
+        <Link to="/" className={styles.brand} aria-label={BRAND}>
           <svg className={styles.paw} viewBox="0 0 20 20" aria-hidden="true">
             <ellipse cx="10" cy="13" rx="5" ry="4.2" />
             <ellipse cx="4.2" cy="7.6" rx="1.9" ry="2.4" />
@@ -41,7 +48,16 @@ function Header() {
             <ellipse cx="12" cy="4.6" rx="1.9" ry="2.4" />
             <ellipse cx="15.8" cy="7.6" rx="1.9" ry="2.4" />
           </svg>
-          {BRAND}
+          {/* Only one name shows at a time: full, then shorter as the screen gets narrower. */}
+          <span className={`${styles.brandText} ${styles.nameFull}`} aria-hidden="true">
+            {BRAND}
+          </span>
+          <span className={`${styles.brandText} ${styles.nameShort}`} aria-hidden="true">
+            {BRAND_SHORT}
+          </span>
+          <span className={`${styles.brandText} ${styles.nameTiny}`} aria-hidden="true">
+            {BRAND_TINY}
+          </span>
         </Link>
 
         <nav className={styles.nav} aria-label="Main">

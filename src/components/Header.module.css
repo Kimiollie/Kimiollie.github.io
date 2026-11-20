@@ -21,6 +21,18 @@
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
+  min-width: 0;
+}
+
+/* Safety net: if the header is ever too tight, the name gets "…" instead of sliding under Menu. */
+.brandText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nameShort,
+.nameTiny {
+  display: none;
 }
 
 .paw {
@@ -127,29 +139,54 @@
   }
 }
 
-@media (max-width: 379.98px) {
+/* Phones: brand, Menu, day/night and the CV button must fit on one line. */
+@media (max-width: 439.98px) {
   .inner {
     gap: 8px;
   }
 
   .brand {
     gap: 7px;
-    font-size: 1rem;
+    font-size: 1.05rem;
+  }
+
+  .paw {
+    width: 20px;
+    height: 20px;
   }
 
   .cv,
   .menuButton {
     padding: 7px 12px;
   }
-}
 
-/* Very narrow phones: brand, Menu, day/night and the CV button must fit on one line. */
-@media (max-width: 439.98px) {
   .cvLong {
     display: none;
   }
 
   .cvShort {
+    display: inline;
+  }
+}
+
+/* Narrow phones: "Kim Ngan Tran" becomes "Kim Tran". */
+@media (max-width: 379.98px) {
+  .nameFull {
+    display: none;
+  }
+
+  .nameShort {
+    display: inline;
+  }
+}
+
+/* Very narrow phones: "Kim Tran" becomes "Kim". */
+@media (max-width: 329.98px) {
+  .nameShort {
+    display: none;
+  }
+
+  .nameTiny {
     display: inline;
   }
 }
